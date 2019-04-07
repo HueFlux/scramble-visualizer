@@ -4,6 +4,6 @@
 using namespace std;
 
 int main() {
-  Cube rubiks_cube;
-  return 0;
+    Cube rubiks_cube;
+    return 0;
 }

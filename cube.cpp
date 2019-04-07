@@ -13,49 +13,70 @@
 // Intializes the Cube face matrices to the standard Rubik's Cube
 // color scheme with White on the top face and Green on the front face
 Cube::Cube() :
-  U_stickers {
-    {1, 1, 1},
-    {1, 1, 1},
-    {1, 1, 1}
-  },
+    U_stickers {
+      {1, 1, 1},
+      {1, 1, 1},
+      {1, 1, 1}
+    },
 
-  D_stickers {
-    {2, 2, 2},
-    {2, 2, 2},
-    {2, 2, 2}
-  },
+    D_stickers {
+      {2, 2, 2},
+      {2, 2, 2},
+      {2, 2, 2}
+    },
 
-  F_stickers {
-    {3, 3, 3},
-    {3, 3, 3},
-    {3, 3, 3}
-  },
+    F_stickers {
+      {3, 3, 3},
+      {3, 3, 3},
+      {3, 3, 3}
+    },
 
-  B_stickers {
-    {4, 4, 4},
-    {4, 4, 4},
-    {4, 4, 4}
-  },
+    B_stickers {
+      {4, 4, 4},
+      {4, 4, 4},
+      {4, 4, 4}
+    },
 
-  L_stickers {
-    {5, 5, 5},
-    {5, 5, 5},
-    {5, 5, 5}
-  },
+    L_stickers {
+      {5, 5, 5},
+      {5, 5, 5},
+      {5, 5, 5}
+    },
 
-  R_stickers {
-    {6, 6, 6},
-    {6, 6, 6},
-    {6, 6, 6}
-  }
+    R_stickers {
+      {6, 6, 6},
+      {6, 6, 6},
+      {6, 6, 6}
+    }
 {}
 
 void Cube::RotateMatrixClockwise(int (&mat)[N][N]) {
 
 }
 
+// https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
 void Cube::RotateMatrixCounterClockwise(int (&mat)[N][N]) {
+    // Consider all squares one by one
+    for (int x = 0; x < N / 2; x++) {
+        // Consider elements in group of 4 in
+        // current square
+        for (int y = x; y < N-x-1; y++) {
+            // store current cell in temp variable
+            int temp = mat[x][y];
 
+            // move values from right to top
+            mat[x][y] = mat[y][N-1-x];
+
+            // move values from bottom to right
+            mat[y][N-1-x] = mat[N-1-x][N-1-y];
+
+            // move values from left to bottom
+            mat[N-1-x][N-1-y] = mat[N-1-y][x];
+
+            // assign temp to left
+            mat[N-1-y][x] = temp;
+        }
+    }
 }
 
 void Cube::UMove() {

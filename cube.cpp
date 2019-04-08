@@ -100,6 +100,9 @@ void Cube::RotateMatrixCounterClockwise(int (&mat)[N][N]) {
 }
 
 void Cube::UMove() {
+    RotateMatrixClockwise(U_stickers);
+
+    // TODO: Rotate the first row of stickers for the F, R, B and L faces clockwise
 
 }
 

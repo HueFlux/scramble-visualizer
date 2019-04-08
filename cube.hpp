@@ -37,6 +37,9 @@ class Cube {
         void RPrimeMove();
         void LMove();
         void LPrimeMove();
+
+        // Friend function for testing private helper functions
+        friend void PrintMatrixRotations(Cube &cube, int (&mat) [N][N]);
 };
 
 #endif

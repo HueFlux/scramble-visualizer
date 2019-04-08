@@ -13,44 +13,44 @@
 // Intializes the Cube face matrices to the standard Rubik's Cube
 // color scheme with White on the top face and Green on the front face
 Cube::Cube() :
-    U_stickers {
+    U_stickers {{
       {1, 1, 1},
       {1, 1, 1},
       {1, 1, 1}
-    },
+    }},
 
-    D_stickers {
+    D_stickers {{
       {2, 2, 2},
       {2, 2, 2},
       {2, 2, 2}
-    },
+    }},
 
-    F_stickers {
+    F_stickers {{
       {3, 3, 3},
       {3, 3, 3},
       {3, 3, 3}
-    },
+    }},
 
-    B_stickers {
+    B_stickers {{
       {4, 4, 4},
       {4, 4, 4},
       {4, 4, 4}
-    },
+    }},
 
-    L_stickers {
+    L_stickers {{
       {5, 5, 5},
       {5, 5, 5},
       {5, 5, 5}
-    },
+    }},
 
-    R_stickers {
+    R_stickers {{
       {6, 6, 6},
       {6, 6, 6},
       {6, 6, 6}
-    }
+    }}
 {}
 
-void Cube::RotateMatrixClockwise(int (&mat)[N][N]) {
+void Cube::RotateMatrixClockwise(std::array<std::array<int, N>, N> &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N / 2; x++) {
         // Consider elements in group of 4 in
@@ -75,7 +75,7 @@ void Cube::RotateMatrixClockwise(int (&mat)[N][N]) {
 }
 
 // https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
-void Cube::RotateMatrixCounterClockwise(int (&mat)[N][N]) {
+void Cube::RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N / 2; x++) {
         // Consider elements in group of 4 in
@@ -100,7 +100,7 @@ void Cube::RotateMatrixCounterClockwise(int (&mat)[N][N]) {
 }
 
 void Cube::UMove() {
-    RotateMatrixClockwise(U_stickers);
+    //RotateMatrixClockwise(U_stickers);
 
     // TODO: Rotate the first row of stickers for the F, R, B and L faces clockwise
 

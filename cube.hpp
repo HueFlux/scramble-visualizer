@@ -1,22 +1,24 @@
 #ifndef __CUBE_HPP__
 #define __CUBE_HPP__
 
+#include <array>
+
 const int N = 3; // Size of Rubik's Cube
 
 class Cube {
     private:
         // Two-dimensional arrays that store the individual sticker values
         // for each face of the Rubik's Cube
-        int U_stickers [N][N];
-        int D_stickers [N][N];
-        int F_stickers [N][N];
-        int B_stickers [N][N];
-        int L_stickers [N][N];
-        int R_stickers [N][N];
+        std::array<std::array<int, N>, N> U_stickers;
+        std::array<std::array<int, N>, N> D_stickers;
+        std::array<std::array<int, N>, N> F_stickers;
+        std::array<std::array<int, N>, N> B_stickers;
+        std::array<std::array<int, N>, N> L_stickers;
+        std::array<std::array<int, N>, N> R_stickers;
 
         // Helper functions used to rotate the values in the face matrices
-        void RotateMatrixClockwise(int (&mat)[N][N]);
-        void RotateMatrixCounterClockwise(int (&mat)[N][N]);
+        void RotateMatrixClockwise(std::array<std::array<int, N>, N> &mat);
+        void RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat);
 
     public:
         // Class constructor that initializes sticker values for
@@ -39,7 +41,7 @@ class Cube {
         void LPrimeMove();
 
         // Friend function for testing private helper functions
-        friend void PrintMatrixRotations(Cube &cube, int (&mat) [N][N]);
+        friend void PrintMatrixRotations(Cube &cube, std::array<std::array<int, N>, N> &mat);
 };
 
 #endif

@@ -100,22 +100,51 @@ void Cube::RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat) 
 }
 
 void Cube::UMove() {
-    //RotateMatrixClockwise(U_stickers);
+    RotateMatrixClockwise(U_stickers);
 
-    // TODO: Rotate the first row of stickers for the F, R, B and L faces clockwise
-
+    // Rotate the first row of stickers for the F, R, B and L faces clockwise
+    // relative to U face of cube
+    std::array<int, N> temp = F_stickers[0];
+    F_stickers[0] = R_stickers[0];
+    R_stickers[0] = B_stickers[0];
+    B_stickers[0] = L_stickers[0];
+    L_stickers[0] = temp;
 }
 
 void Cube::UPrimeMove() {
+    RotateMatrixCounterClockwise(U_stickers);
 
+    // Rotate the first row of stickers for the F, R, B and L faces
+    // counter-clockwise relative to U face of cube
+    std::array<int, N> temp = F_stickers[0];
+    F_stickers[0] = L_stickers[0];
+    L_stickers[0] = B_stickers[0];
+    B_stickers[0] = R_stickers[0];
+    R_stickers[0] = temp;
 }
 
 void Cube::DMove() {
+    RotateMatrixClockwise(D_stickers);
 
+    // Rotate the last row of stickers for the F, R, B and L faces clockwise
+    // relative to D face of cube
+    std::array<int, N> temp = F_stickers[N-1];
+    F_stickers[N-1] = L_stickers[N-1];
+    L_stickers[N-1] = B_stickers[N-1];
+    B_stickers[N-1] = R_stickers[N-1];
+    R_stickers[N-1] = temp;
 }
 
 void Cube::DPrimeMove() {
+    RotateMatrixCounterClockwise(D_stickers);
 
+    // Rotate the first row of stickers for the F, R, B and L faces
+    // counter-clockwise relative to D face of cube
+    std::array<int, N> temp = F_stickers[N-1];
+    F_stickers[N-1] = R_stickers[N-1];
+    R_stickers[N-1] = B_stickers[N-1];
+    B_stickers[N-1] = L_stickers[N-1];
+    L_stickers[N-1] = temp;
 }
 
 void Cube::FMove() {

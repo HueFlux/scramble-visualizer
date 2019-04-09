@@ -25,7 +25,15 @@ class Cube {
         // all the face matrices
         Cube();
 
-        // Functions representing all distinct types of moves on a Rubik's Cube
+        // Getter methods to access array matrices
+        const std::array<std::array<int, N>, N>& GetUStickers();
+        const std::array<std::array<int, N>, N>& GetDStickers();
+        const std::array<std::array<int, N>, N>& GetFStickers();
+        const std::array<std::array<int, N>, N>& GetBStickers();
+        const std::array<std::array<int, N>, N>& GetLStickers();
+        const std::array<std::array<int, N>, N>& GetRStickers();
+
+        // Methods representing all distinct types of moves on a Rubik's Cube
         // These functions will define how all faces will be affected
         void UMove();
         void UPrimeMove();
@@ -43,5 +51,31 @@ class Cube {
         // Friend function for testing private helper functions
         friend void PrintMatrixRotations(Cube &cube, std::array<std::array<int, N>, N> &mat);
 };
+
+
+// Implementation of getter methods
+inline const std::array<std::array<int, N>, N>& Cube::GetUStickers() {
+    return U_stickers;
+}
+
+inline const std::array<std::array<int, N>, N>& Cube::GetDStickers() {
+    return D_stickers;
+}
+
+inline const std::array<std::array<int, N>, N>& Cube::GetFStickers() {
+    return F_stickers;
+}
+
+inline const std::array<std::array<int, N>, N>& Cube::GetBStickers() {
+    return B_stickers;
+}
+
+inline const std::array<std::array<int, N>, N>& Cube::GetLStickers() {
+    return L_stickers;
+}
+
+inline const std::array<std::array<int, N>, N>& Cube::GetRStickers() {
+    return R_stickers;
+}
 
 #endif

@@ -40,6 +40,7 @@ int main() {
     // PrintMatrixRotations(rubiks_cube, matrix);
 
     rubiks_cube.FMove();
+    rubiks_cube.FPrimeMove();
     rubiks_cube.PrintCube();
 
     return 0;

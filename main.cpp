@@ -5,7 +5,7 @@ using namespace std;
 
 // Prints out matrix mat with spaces in between elements
 // and each row on a new line
-void printMatrix(const std::array<std::array<int, N>, N> &mat) {
+void PrintMatrix(const std::array<std::array<int, N>, N> &mat) {
     for (auto& row : mat) {
         for (auto& i : row) {
             cout << i << " ";
@@ -16,15 +16,15 @@ void printMatrix(const std::array<std::array<int, N>, N> &mat) {
 
 void PrintMatrixRotations(Cube &cube, std::array<std::array<int, N>, N> &mat) {
     cout << "Original Matrix:" << endl;
-    printMatrix(mat);
+    PrintMatrix(mat);
 
     cube.RotateMatrixClockwise(mat);
     cout << "Matrix rotated 90 degrees clockwise:" << endl;
-    printMatrix(mat);
+    PrintMatrix(mat);
 
     cube.RotateMatrixCounterClockwise(mat);
     cout << "Previous Matrix rotated 90 degrees counter-clockwise:" << endl;
-    printMatrix(mat); // Should be identical to original matrix
+    PrintMatrix(mat); // Should be identical to original matrix
 
 }
 

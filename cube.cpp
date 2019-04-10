@@ -99,6 +99,22 @@ void Cube::RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat) 
     }
 }
 
+std::array<int*, N> GetColumn(std::array<std::array<int, N>, N> &mat, int col) {
+    std::array<int*, N> column_array = {};
+    for (int i = 0; i < N; i++) {
+        column_array[i] = &mat[i][col];
+    }
+    return column_array;
+}
+
+std::array<int*, N> GetColumnReverse(std::array<std::array<int, N>, N> &mat, int col) {
+    std::array<int*, N> column_array = {};
+    for (int i = 0; i < N; i++) {
+        column_array[i] = &mat[N-1-i][col];
+    }
+    return column_array;
+}
+
 void Cube::UMove() {
     RotateMatrixClockwise(U_stickers);
 

@@ -17,21 +17,29 @@ class Cube {
         std::array<std::array<int, N>, N> R_stickers;
 
         // Helper functions used to rotate the values in the face matrices
+        // by 90 degrees
         void RotateMatrixClockwise(std::array<std::array<int, N>, N> &mat);
         void RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat);
+
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays of pointers in top-down order
+        std::array<int*, N> GetColumn(std::array<std::array<int, N>, N> &mat, int col);
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays of pointers in bottom-up order
+        std::array<int*, N> GetColumnReverse(std::array<std::array<int, N>, N> &mat, int col);
 
     public:
         // Class constructor that initializes sticker values for
         // all the face matrices
         Cube();
 
-        // Getter methods to access array matrices
-        const std::array<std::array<int, N>, N>& GetUStickers();
-        const std::array<std::array<int, N>, N>& GetDStickers();
-        const std::array<std::array<int, N>, N>& GetFStickers();
-        const std::array<std::array<int, N>, N>& GetBStickers();
-        const std::array<std::array<int, N>, N>& GetLStickers();
-        const std::array<std::array<int, N>, N>& GetRStickers();
+        // Getter methods to access face matrices
+        const std::array<std::array<int, N>, N>& GetUStickers() const;
+        const std::array<std::array<int, N>, N>& GetDStickers() const;
+        const std::array<std::array<int, N>, N>& GetFStickers() const;
+        const std::array<std::array<int, N>, N>& GetBStickers() const;
+        const std::array<std::array<int, N>, N>& GetLStickers() const;
+        const std::array<std::array<int, N>, N>& GetRStickers() const;
 
         // Methods representing all distinct types of moves on a Rubik's Cube
         // These functions will define how all faces will be affected
@@ -54,27 +62,27 @@ class Cube {
 
 
 // Implementation of getter methods
-inline const std::array<std::array<int, N>, N>& Cube::GetUStickers() {
+inline const std::array<std::array<int, N>, N>& Cube::GetUStickers() const {
     return U_stickers;
 }
 
-inline const std::array<std::array<int, N>, N>& Cube::GetDStickers() {
+inline const std::array<std::array<int, N>, N>& Cube::GetDStickers() const {
     return D_stickers;
 }
 
-inline const std::array<std::array<int, N>, N>& Cube::GetFStickers() {
+inline const std::array<std::array<int, N>, N>& Cube::GetFStickers() const {
     return F_stickers;
 }
 
-inline const std::array<std::array<int, N>, N>& Cube::GetBStickers() {
+inline const std::array<std::array<int, N>, N>& Cube::GetBStickers() const {
     return B_stickers;
 }
 
-inline const std::array<std::array<int, N>, N>& Cube::GetLStickers() {
+inline const std::array<std::array<int, N>, N>& Cube::GetLStickers() const {
     return L_stickers;
 }
 
-inline const std::array<std::array<int, N>, N>& Cube::GetRStickers() {
+inline const std::array<std::array<int, N>, N>& Cube::GetRStickers() const {
     return R_stickers;
 }
 

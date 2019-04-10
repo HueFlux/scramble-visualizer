@@ -41,6 +41,7 @@ int main() {
 
     rubiks_cube.FMove();
     rubiks_cube.FPrimeMove();
+    rubiks_cube.BPrimeMove();
     rubiks_cube.PrintCube();
 
     return 0;

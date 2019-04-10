@@ -1,56 +1,56 @@
 #include "cube.hpp"
 
-/* Integer values used to represent sticker colors
- * 0 = None
- * 1 = White
- * 2 = Yellow
- * 3 = Green
- * 4 = Blue
- * 5 = Orange
- * 6 = Red
+/* Char values used to represent sticker colors
+ * 'N' = None
+ * 'W' = White
+ * 'Y' = Yellow
+ * 'G' = Green
+ * 'B' = Blue
+ * 'O' = Orange
+ * 'R' = Red
  */
 
 // Intializes the Cube face matrices to the standard Rubik's Cube
 // color scheme with White on the top face and Green on the front face
 Cube::Cube() :
     U_stickers {{
-      {1, 1, 1},
-      {1, 1, 1},
-      {1, 1, 1}
+      {'W', 'W', 'W'},
+      {'W', 'W', 'W'},
+      {'W', 'W', 'W'}
     }},
 
     D_stickers {{
-      {2, 2, 2},
-      {2, 2, 2},
-      {2, 2, 2}
+      {'Y', 'Y', 'Y'},
+      {'Y', 'Y', 'Y'},
+      {'Y', 'Y', 'Y'}
     }},
 
     F_stickers {{
-      {3, 3, 3},
-      {3, 3, 3},
-      {3, 3, 3}
+      {'G', 'G', 'G'},
+      {'G', 'G', 'G'},
+      {'G', 'G', 'G'}
     }},
 
     B_stickers {{
-      {4, 4, 4},
-      {4, 4, 4},
-      {4, 4, 4}
+      {'B', 'B', 'B'},
+      {'B', 'B', 'B'},
+      {'B', 'B', 'B'}
     }},
 
     L_stickers {{
-      {5, 5, 5},
-      {5, 5, 5},
-      {5, 5, 5}
+      {'O', 'O', 'O'},
+      {'O', 'O', 'O'},
+      {'O', 'O', 'O'}
     }},
 
     R_stickers {{
-      {6, 6, 6},
-      {6, 6, 6},
-      {6, 6, 6}
+      {'R', 'R', 'R'},
+      {'R', 'R', 'R'},
+      {'R', 'R', 'R'}
     }}
 {}
 
-void Cube::RotateMatrixClockwise(std::array<std::array<int, N>, N> &mat) {
+void Cube::RotateMatrixClockwise(std::array<std::array<char, N>, N> &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N / 2; x++) {
         // Consider elements in group of 4 in
@@ -75,7 +75,7 @@ void Cube::RotateMatrixClockwise(std::array<std::array<int, N>, N> &mat) {
 }
 
 // https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
-void Cube::RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat) {
+void Cube::RotateMatrixCounterClockwise(std::array<std::array<char, N>, N> &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N / 2; x++) {
         // Consider elements in group of 4 in
@@ -99,16 +99,16 @@ void Cube::RotateMatrixCounterClockwise(std::array<std::array<int, N>, N> &mat) 
     }
 }
 
-std::array<int*, N> GetColumn(std::array<std::array<int, N>, N> &mat, int col) {
-    std::array<int*, N> column_array = {};
+std::array<char*, N> GetColumn(std::array<std::array<char, N>, N> &mat, int col) {
+    std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[i][col];
     }
     return column_array;
 }
 
-std::array<int*, N> GetColumnReverse(std::array<std::array<int, N>, N> &mat, int col) {
-    std::array<int*, N> column_array = {};
+std::array<char*, N> GetColumnReverse(std::array<std::array<char, N>, N> &mat, int col) {
+    std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[N-1-i][col];
     }
@@ -120,7 +120,7 @@ void Cube::UMove() {
 
     // Rotate the first row of stickers for the F, R, B and L faces clockwise
     // relative to U face of cube
-    std::array<int, N> temp = F_stickers[0];
+    std::array<char, N> temp = F_stickers[0];
     F_stickers[0] = R_stickers[0];
     R_stickers[0] = B_stickers[0];
     B_stickers[0] = L_stickers[0];
@@ -132,7 +132,7 @@ void Cube::UPrimeMove() {
 
     // Rotate the first row of stickers for the F, R, B and L faces
     // counter-clockwise relative to U face of cube
-    std::array<int, N> temp = F_stickers[0];
+    std::array<char, N> temp = F_stickers[0];
     F_stickers[0] = L_stickers[0];
     L_stickers[0] = B_stickers[0];
     B_stickers[0] = R_stickers[0];
@@ -144,7 +144,7 @@ void Cube::DMove() {
 
     // Rotate the last row of stickers for the F, R, B and L faces clockwise
     // relative to D face of cube
-    std::array<int, N> temp = F_stickers[N-1];
+    std::array<char, N> temp = F_stickers[N-1];
     F_stickers[N-1] = L_stickers[N-1];
     L_stickers[N-1] = B_stickers[N-1];
     B_stickers[N-1] = R_stickers[N-1];
@@ -156,7 +156,7 @@ void Cube::DPrimeMove() {
 
     // Rotate the first row of stickers for the F, R, B and L faces
     // counter-clockwise relative to D face of cube
-    std::array<int, N> temp = F_stickers[N-1];
+    std::array<char, N> temp = F_stickers[N-1];
     F_stickers[N-1] = R_stickers[N-1];
     R_stickers[N-1] = B_stickers[N-1];
     B_stickers[N-1] = L_stickers[N-1];

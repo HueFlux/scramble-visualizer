@@ -37,7 +37,10 @@ int main() {
       {'G', 'H', 'I'}
     }};
 
-    PrintMatrixRotations(rubiks_cube, matrix);
+    // PrintMatrixRotations(rubiks_cube, matrix);
+
+    rubiks_cube.FMove();
+    rubiks_cube.PrintCube();
 
     return 0;
 }

@@ -22,11 +22,21 @@ class Cube {
         void RotateMatrixCounterClockwise(std::array<std::array<char, N>, N> &mat);
 
         // Helper function used to access the columns in the face matrices
+        // as std::arrays in top-down order
+        std::array<char, N> GetColumnValues(std::array<std::array<char, N>, N> &mat, int col);
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays in bottom-up order
+        std::array<char, N> GetColumnValuesReverse(std::array<std::array<char, N>, N> &mat, int col);
+
+        // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in top-down order
-        std::array<char*, N> GetColumn(std::array<std::array<char, N>, N> &mat, int col);
+        std::array<char*, N> GetColumnPointers(std::array<std::array<char, N>, N> &mat, int col);
         // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in bottom-up order
-        std::array<char*, N> GetColumnReverse(std::array<std::array<char, N>, N> &mat, int col);
+        std::array<char*, N> GetColumnPointersReverse(std::array<std::array<char, N>, N> &mat, int col);
+        // Helper function used to copy the values of an array of chars into
+        // an array of char pointers
+        void CopyValues(std::array<char*, N> pointers, const std::array<char, N>& values);
 
     public:
         // Class constructor that initializes sticker values for
@@ -55,6 +65,9 @@ class Cube {
         void RPrimeMove();
         void LMove();
         void LPrimeMove();
+
+        // Method that prints a 2D representation of the Rubik's Cube
+        void PrintCube() const;
 
         // Friend function for testing private helper functions
         friend void PrintMatrixRotations(Cube &cube, std::array<std::array<char, N>, N> &mat);

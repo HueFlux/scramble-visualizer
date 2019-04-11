@@ -34,6 +34,7 @@ class Cube {
         // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in bottom-up order
         std::array<char*, N> GetColumnPointersReverse(std::array<std::array<char, N>, N> &mat, int col);
+        
         // Helper function used to copy the values of an array of chars into
         // an array of char pointers
         void CopyValues(std::array<char*, N> pointers, const std::array<char, N>& values);

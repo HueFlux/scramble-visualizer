@@ -262,11 +262,27 @@ void Cube::RPrimeMove() {
 }
 
 void Cube::LMove() {
+    RotateMatrixClockwise(L_stickers);
 
+    // Rotate the appropriate row of stickers for the U, F, D, and B
+    // faces clockwise relative to L face of cube
+    std::array<char, N> temp = GetColumnValues(U_stickers, 0);
+    CopyValues(GetColumnPointers(U_stickers, 0), GetColumnValuesReverse(B_stickers, N-1));
+    CopyValues(GetColumnPointersReverse(B_stickers, N-1), GetColumnValues(D_stickers, 0));
+    CopyValues(GetColumnPointers(D_stickers, 0), GetColumnValues(F_stickers, 0));
+    CopyValues(GetColumnPointers(F_stickers, 0), temp);
 }
 
 void Cube::LPrimeMove() {
+    RotateMatrixCounterClockwise(L_stickers);
 
+    // Rotate the appropriate row of stickers for the U, F, D, and B
+    // faces counter-clockwise relative to L face of cube
+    std::array<char, N> temp = GetColumnValues(U_stickers, 0);
+    CopyValues(GetColumnPointers(U_stickers, 0), GetColumnValues(F_stickers, 0));
+    CopyValues(GetColumnPointers(F_stickers, 0), GetColumnValues(D_stickers, 0));
+    CopyValues(GetColumnPointers(D_stickers, 0), GetColumnValuesReverse(B_stickers, N-1));
+    CopyValues(GetColumnPointersReverse(B_stickers, N-1), temp);
 }
 
 void Cube::PrintCube() const {

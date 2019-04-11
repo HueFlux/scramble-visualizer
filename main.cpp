@@ -3,53 +3,85 @@
 
 using namespace std;
 
-// Prints out matrix mat with spaces in between elements
-// and each row on a new line
-void PrintMatrix(const std::array<std::array<char, N>, N> &mat) {
-    for (auto& row : mat) {
-        for (auto& i : row) {
-            cout << i << " ";
-        }
-        cout << endl;
-    }
-}
-
-void PrintMatrixRotations(Cube &cube, std::array<std::array<char, N>, N> &mat) {
-    cout << "Original Matrix:" << endl;
-    PrintMatrix(mat);
-
-    cube.RotateMatrixClockwise(mat);
-    cout << "Matrix rotated 90 degrees clockwise:" << endl;
-    PrintMatrix(mat);
-
-    cube.RotateMatrixCounterClockwise(mat);
-    cout << "Previous Matrix rotated 90 degrees counter-clockwise:" << endl;
-    PrintMatrix(mat); // Should be identical to original matrix
-
-}
+void SimulateRubiksCube();
 
 int main() {
-    Cube rubiks_cube;
-
-    std::array<std::array<char, 3>, 3> matrix = {{
-      {'A', 'B', 'C'},
-      {'D', 'E', 'F'},
-      {'G', 'H', 'I'}
-    }};
-
-    // PrintMatrixRotations(rubiks_cube, matrix);
-
-    rubiks_cube.UMove();
-    rubiks_cube.UPrimeMove();
-    rubiks_cube.FMove();
-    rubiks_cube.FPrimeMove();
-    rubiks_cube.BMove();
-    rubiks_cube.BPrimeMove();
-    rubiks_cube.RMove();
-    rubiks_cube.RPrimeMove();
-    rubiks_cube.LMove();
-    rubiks_cube.LPrimeMove();
-    rubiks_cube.PrintCube();
-
+    SimulateRubiksCube();
     return 0;
+}
+
+void SimulateRubiksCube() {
+    Cube rubiks_cube;
+    string move;
+
+    while (true) {
+        cout << endl;
+        rubiks_cube.PrintCube();
+        cout << endl;
+
+        cout << "Enter a move to make (Q to quit): ";
+        cin >> move;
+
+        if (move[0] == 'U') {
+            if (move.length() == 1) {
+                rubiks_cube.UMove();
+            }
+            else if (move[1] == '\'') {
+                rubiks_cube.UPrimeMove();
+            }
+        }
+
+        else if (move[0] == 'D') {
+            if (move.length() == 1) {
+                rubiks_cube.DMove();
+            }
+            else if (move[1] == '\'') {
+                rubiks_cube.DPrimeMove();
+            }
+        }
+
+        else if (move[0] == 'F') {
+            if (move.length() == 1) {
+                rubiks_cube.FMove();
+            }
+            else if (move[1] == '\'') {
+                rubiks_cube.FPrimeMove();
+            }
+        }
+
+        else if (move[0] == 'B') {
+            if (move.length() == 1) {
+                rubiks_cube.BMove();
+            }
+            else if (move[1] == '\'') {
+                rubiks_cube.BPrimeMove();
+            }
+        }
+
+        else if (move[0] == 'L') {
+            if (move.length() == 1) {
+                rubiks_cube.LMove();
+            }
+            else if (move[1] == '\'') {
+                rubiks_cube.LPrimeMove();
+            }
+        }
+
+        else if (move[0] == 'R') {
+            if (move.length() == 1) {
+                rubiks_cube.RMove();
+            }
+            else if (move[1] == '\'') {
+                rubiks_cube.RPrimeMove();
+            }
+        }
+
+        else if (move == "Q") {
+            break;
+        }
+
+        else {
+            cout << "Invalid move." << endl;
+        }
+    }
 }

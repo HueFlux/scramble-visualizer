@@ -3,20 +3,20 @@
 
 using namespace std;
 
-void SimulateRubiksCube();
+void simulateRubiksCube();
 
 int main() {
-    SimulateRubiksCube();
+    simulateRubiksCube();
     return 0;
 }
 
-void SimulateRubiksCube() {
+void simulateRubiksCube() {
     Cube rubiks_cube;
     string move;
 
     while (true) {
         cout << endl;
-        rubiks_cube.PrintCube();
+        rubiks_cube.printCube();
         cout << endl;
 
         cout << "Enter a move to make (Q to quit): ";

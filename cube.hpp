@@ -4,40 +4,41 @@
 #include <array>
 
 const int N = 3; // Size of Rubik's Cube
+using FaceStickers = std::array<std::array<char, N>, N>;
 
 class Cube {
     private:
         // Two-dimensional arrays that store the individual sticker values
         // for each face of the Rubik's Cube
-        std::array<std::array<char, N>, N> U_stickers;
-        std::array<std::array<char, N>, N> D_stickers;
-        std::array<std::array<char, N>, N> F_stickers;
-        std::array<std::array<char, N>, N> B_stickers;
-        std::array<std::array<char, N>, N> L_stickers;
-        std::array<std::array<char, N>, N> R_stickers;
+        FaceStickers U_stickers;
+        FaceStickers D_stickers;
+        FaceStickers F_stickers;
+        FaceStickers B_stickers;
+        FaceStickers L_stickers;
+        FaceStickers R_stickers;
 
         // Helper functions used to rotate the values in the face matrices
         // by 90 degrees
-        void RotateMatrixClockwise(std::array<std::array<char, N>, N> &mat);
-        void RotateMatrixCounterClockwise(std::array<std::array<char, N>, N> &mat);
+        void rotateMatrixClockwise(FaceStickers &mat);
+        void rotateMatrixCounterClockwise(FaceStickers &mat);
 
         // Helper function used to access the columns in the face matrices
         // as std::arrays in top-down order
-        std::array<char, N> GetColumnValues(std::array<std::array<char, N>, N> &mat, int col);
+        std::array<char, N> getColumnValues(FaceStickers &mat, int col);
         // Helper function used to access the columns in the face matrices
         // as std::arrays in bottom-up order
-        std::array<char, N> GetColumnValuesReverse(std::array<std::array<char, N>, N> &mat, int col);
+        std::array<char, N> getColumnValuesReverse(FaceStickers &mat, int col);
 
         // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in top-down order
-        std::array<char*, N> GetColumnPointers(std::array<std::array<char, N>, N> &mat, int col);
+        std::array<char*, N> getColumnPointers(FaceStickers &mat, int col);
         // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in bottom-up order
-        std::array<char*, N> GetColumnPointersReverse(std::array<std::array<char, N>, N> &mat, int col);
+        std::array<char*, N> getColumnPointersReverse(FaceStickers &mat, int col);
 
         // Helper function used to copy the values of an array of chars into
         // an array of char pointers
-        void CopyValues(std::array<char*, N> pointers, const std::array<char, N>& values);
+        void copyValues(std::array<char*, N> pointers, const std::array<char, N>& values);
 
     public:
         // Class constructor that initializes sticker values for
@@ -45,12 +46,12 @@ class Cube {
         Cube();
 
         // Getter methods to access face matrices
-        const std::array<std::array<char, N>, N>& GetUStickers() const;
-        const std::array<std::array<char, N>, N>& GetDStickers() const;
-        const std::array<std::array<char, N>, N>& GetFStickers() const;
-        const std::array<std::array<char, N>, N>& GetBStickers() const;
-        const std::array<std::array<char, N>, N>& GetLStickers() const;
-        const std::array<std::array<char, N>, N>& GetRStickers() const;
+        const FaceStickers& getUStickers() const;
+        const FaceStickers& getDStickers() const;
+        const FaceStickers& getFStickers() const;
+        const FaceStickers& getBStickers() const;
+        const FaceStickers& getLStickers() const;
+        const FaceStickers& getRStickers() const;
 
         // Methods representing all distinct types of moves on a Rubik's Cube
         // These functions will define how all faces will be affected
@@ -68,32 +69,32 @@ class Cube {
         void LPrimeMove();
 
         // Method that prints a 2D representation of the Rubik's Cube
-        void PrintCube() const;
+        void printCube() const;
 };
 
 
 // Implementation of getter methods
-inline const std::array<std::array<char, N>, N>& Cube::GetUStickers() const {
+inline const FaceStickers& Cube::getUStickers() const {
     return U_stickers;
 }
 
-inline const std::array<std::array<char, N>, N>& Cube::GetDStickers() const {
+inline const FaceStickers& Cube::getDStickers() const {
     return D_stickers;
 }
 
-inline const std::array<std::array<char, N>, N>& Cube::GetFStickers() const {
+inline const FaceStickers& Cube::getFStickers() const {
     return F_stickers;
 }
 
-inline const std::array<std::array<char, N>, N>& Cube::GetBStickers() const {
+inline const FaceStickers& Cube::getBStickers() const {
     return B_stickers;
 }
 
-inline const std::array<std::array<char, N>, N>& Cube::GetLStickers() const {
+inline const FaceStickers& Cube::getLStickers() const {
     return L_stickers;
 }
 
-inline const std::array<std::array<char, N>, N>& Cube::GetRStickers() const {
+inline const FaceStickers& Cube::getRStickers() const {
     return R_stickers;
 }
 

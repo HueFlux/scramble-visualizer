@@ -1,8 +1,6 @@
 #include "cube.hpp"
 #include <iostream>
 
-using namespace std;
-
 void simulateRubiksCube();
 
 int main() {
@@ -12,76 +10,21 @@ int main() {
 
 void simulateRubiksCube() {
     Cube rubiks_cube;
-    string move;
+    std::string algorithm;
 
     while (true) {
-        cout << endl;
+        std::cout << std::endl;
         rubiks_cube.printCube();
-        cout << endl;
+        std::cout << std::endl;
 
-        cout << "Enter a move to make (Q to quit): ";
-        cin >> move;
+        std::cout << "Enter a move or algorithm to execute (Q to quit): ";
+        std::getline(std::cin, algorithm);
 
-        if (move[0] == 'U') {
-            if (move.length() == 1) {
-                rubiks_cube.UMove();
-            }
-            else if (move[1] == '\'') {
-                rubiks_cube.UPrimeMove();
-            }
-        }
-
-        else if (move[0] == 'D') {
-            if (move.length() == 1) {
-                rubiks_cube.DMove();
-            }
-            else if (move[1] == '\'') {
-                rubiks_cube.DPrimeMove();
-            }
-        }
-
-        else if (move[0] == 'F') {
-            if (move.length() == 1) {
-                rubiks_cube.FMove();
-            }
-            else if (move[1] == '\'') {
-                rubiks_cube.FPrimeMove();
-            }
-        }
-
-        else if (move[0] == 'B') {
-            if (move.length() == 1) {
-                rubiks_cube.BMove();
-            }
-            else if (move[1] == '\'') {
-                rubiks_cube.BPrimeMove();
-            }
-        }
-
-        else if (move[0] == 'L') {
-            if (move.length() == 1) {
-                rubiks_cube.LMove();
-            }
-            else if (move[1] == '\'') {
-                rubiks_cube.LPrimeMove();
-            }
-        }
-
-        else if (move[0] == 'R') {
-            if (move.length() == 1) {
-                rubiks_cube.RMove();
-            }
-            else if (move[1] == '\'') {
-                rubiks_cube.RPrimeMove();
-            }
-        }
-
-        else if (move == "Q") {
+        if (std::toupper(algorithm[0]) == 'Q') {
             break;
         }
-
-        else {
-            cout << "Invalid move." << endl;
+        if(!rubiks_cube.applyAlgorithm(algorithm)) {
+            std::cout << "Invalid move(s)." << std::endl;
         }
     }
 }

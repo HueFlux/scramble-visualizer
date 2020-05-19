@@ -1,6 +1,8 @@
 #include "cube.hpp"
 #include <iostream>
 #include <iomanip>
+#include <vector>
+#include <cctype>
 
 /* Char values used to represent sticker colors
  * 'N' = None
@@ -50,7 +52,20 @@ Cube::Cube() :
       {'R', 'R', 'R'},
       {'R', 'R', 'R'}
     }}
-{}
+{
+    moveToFunction["U"]  = [this] { this->UMove(); };
+    moveToFunction["U'"] = [this] { this->UPrimeMove(); };
+    moveToFunction["D"]  = [this] { this->DMove(); };
+    moveToFunction["D'"] = [this] { this->DPrimeMove(); };
+    moveToFunction["F"]  = [this] { this->FMove(); };
+    moveToFunction["F'"] = [this] { this->FPrimeMove(); };
+    moveToFunction["B"]  = [this] { this->BMove(); };
+    moveToFunction["B'"] = [this] { this->BPrimeMove(); };
+    moveToFunction["L"]  = [this] { this->LMove(); };
+    moveToFunction["L'"] = [this] { this->LPrimeMove(); };
+    moveToFunction["R"]  = [this] { this->RMove(); };
+    moveToFunction["R'"] = [this] { this->RPrimeMove(); };
+}
 
 void Cube::rotateMatrixClockwise(FaceStickers &mat) {
     // Consider all squares one by one
@@ -230,8 +245,8 @@ void Cube::BPrimeMove() {
     // Rotate the appropriate row/column of stickers for the U, R, D, and L
     // faces counter-clockwise relative to B face of cube
     std::array<char, N> temp = U_stickers[0];
-    U_stickers[0] = getColumnValues(L_stickers, 0);
-    copyValues(getColumnPointersReverse(L_stickers, 0), D_stickers[N-1]);
+    U_stickers[0] = getColumnValuesReverse(L_stickers, 0);
+    copyValues(getColumnPointers(L_stickers, 0), D_stickers[N-1]);
     D_stickers[N-1] = getColumnValuesReverse(R_stickers, N-1);
     copyValues(getColumnPointers(R_stickers, N-1), temp);
 }
@@ -283,6 +298,33 @@ void Cube::LPrimeMove() {
     copyValues(getColumnPointers(F_stickers, 0), getColumnValues(D_stickers, 0));
     copyValues(getColumnPointers(D_stickers, 0), getColumnValuesReverse(B_stickers, N-1));
     copyValues(getColumnPointersReverse(B_stickers, N-1), temp);
+}
+
+bool Cube::applyAlgorithm(const std::string &algorithm) {
+    std::vector<std::string> moves;
+    std::string current_move = "";
+    // Parse moves in algorithm separated by spaces
+    for (int i = 0; i < algorithm.length(); i++) {
+        if (std::toupper(algorithm[i]) == ' ') {
+            moves.push_back(current_move);
+            current_move = "";
+            continue;
+        }
+        current_move += std::toupper(algorithm[i]);
+    }
+    // If algorithm does not end with space, push back last move
+    if (current_move.length() > 0) {
+        moves.push_back(current_move);
+    }
+    // Execute moves
+    for (std::string move : moves) {
+        try {
+            moveToFunction.at(move)();
+        } catch (...) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void Cube::printCube() const {

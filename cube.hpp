@@ -1,5 +1,5 @@
-#ifndef __CUBE_HPP__
-#define __CUBE_HPP__
+#ifndef CUBE_HPP
+#define CUBE_HPP
 
 #include <array>
 #include <unordered_map>
@@ -28,16 +28,22 @@ class Cube {
         // These functions will define how all faces will be affected
         void UMove();
         void UPrimeMove();
+        void U2Move();
         void DMove();
         void DPrimeMove();
+        void D2Move();
         void FMove();
         void FPrimeMove();
+        void F2Move();
         void BMove();
         void BPrimeMove();
+        void B2Move();
         void RMove();
         void RPrimeMove();
+        void R2Move();
         void LMove();
         void LPrimeMove();
+        void L2Move();
 
         // Method that takes a series of moves as a string and applies
         // them to the Rubik's Cube
@@ -65,6 +71,9 @@ class Cube {
         // by 90 degrees
         void rotateMatrixClockwise(FaceStickers &mat);
         void rotateMatrixCounterClockwise(FaceStickers &mat);
+        // Helper function used to rotate the values in the face matrices
+        // by 180 degrees
+        void rotateMatrix180(FaceStickers &mat);
 
         // Helper function used to access the columns in the face matrices
         // as std::arrays in top-down order
@@ -85,31 +94,5 @@ class Cube {
         void copyValues(std::array<char*, N> pointers, const std::array<char, N>& values);
 
 };
-
-
-// Implementation of getter methods
-inline const FaceStickers& Cube::getUStickers() const {
-    return U_stickers;
-}
-
-inline const FaceStickers& Cube::getDStickers() const {
-    return D_stickers;
-}
-
-inline const FaceStickers& Cube::getFStickers() const {
-    return F_stickers;
-}
-
-inline const FaceStickers& Cube::getBStickers() const {
-    return B_stickers;
-}
-
-inline const FaceStickers& Cube::getLStickers() const {
-    return L_stickers;
-}
-
-inline const FaceStickers& Cube::getRStickers() const {
-    return R_stickers;
-}
 
 #endif

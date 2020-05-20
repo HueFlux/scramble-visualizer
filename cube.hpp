@@ -11,8 +11,8 @@ class Cube {
         static const int N = 3; // Size of Rubik's Cube
         using FaceStickers = std::array<std::array<char, N>, N>;
 
-        // Class constructor that initializes sticker values for
-        // all the face matrices
+        // Class constructor that initializes sticker values for all the
+        // face matrices as well as populates moveToFunction unordered_map
         Cube();
 
         // Getter methods to access face matrices
@@ -73,6 +73,28 @@ class Cube {
         // Helper function used to rotate the values in the face matrices
         // by 180 degrees
         void rotateMatrix180(FaceStickers &mat);
+
+        // Helper functions used to rotate slices of stickers in the direction
+        // of an x or x' cube rotation
+        // The col parameter corresponds to the column of stickers on the F
+        // face that belong to the slice
+        void rotateSliceX(int col);
+        void rotateSliceXPrime(int col);
+        void rotateSliceX2(int col);
+        // Helper functions used to rotate slices of stickers in the direction
+        // of a y or y' cube rotation
+        // The row parameter corresponds to the row of stickers on the F
+        // face that belong to the slice
+        void rotateSliceY(int row);
+        void rotateSliceYPrime(int row);
+        void rotateSliceY2(int row);
+        // Helper functions used to rotate slices of stickers in the direction
+        // of a z or z' cube rotation
+        // The row parameter corresponds to the row of stickers on the U
+        // face that belong to the slice
+        void rotateSliceZ(int row);
+        void rotateSliceZPrime(int row);
+        void rotateSliceZ2(int row);
 
         // Helper function used to access the columns in the face matrices
         // as std::arrays in top-down order

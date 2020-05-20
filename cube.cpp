@@ -19,43 +19,26 @@
 
 // Intializes the Cube face matrices to the standard Rubik's Cube
 // color scheme with White on the top face and Green on the front face
-Cube::Cube() :
-    U_stickers {{
-      {'W', 'W', 'W'},
-      {'W', 'W', 'W'},
-      {'W', 'W', 'W'}
-    }},
+Cube::Cube() {
+    for (auto& sticker : U_stickers) {
+        sticker.fill('W');
+    }
+    for (auto& sticker : D_stickers) {
+        sticker.fill('Y');
+    }
+    for (auto& sticker : F_stickers) {
+        sticker.fill('G');
+    }
+    for (auto& sticker : B_stickers) {
+        sticker.fill('B');
+    }
+    for (auto& sticker : L_stickers) {
+        sticker.fill('O');
+    }
+    for (auto& sticker : R_stickers) {
+        sticker.fill('R');
+    }
 
-    D_stickers {{
-      {'Y', 'Y', 'Y'},
-      {'Y', 'Y', 'Y'},
-      {'Y', 'Y', 'Y'}
-    }},
-
-    F_stickers {{
-      {'G', 'G', 'G'},
-      {'G', 'G', 'G'},
-      {'G', 'G', 'G'}
-    }},
-
-    B_stickers {{
-      {'B', 'B', 'B'},
-      {'B', 'B', 'B'},
-      {'B', 'B', 'B'}
-    }},
-
-    L_stickers {{
-      {'O', 'O', 'O'},
-      {'O', 'O', 'O'},
-      {'O', 'O', 'O'}
-    }},
-
-    R_stickers {{
-      {'R', 'R', 'R'},
-      {'R', 'R', 'R'},
-      {'R', 'R', 'R'}
-    }}
-{
     moveToFunction["U"]  = [this] { this->UMove(); };
     moveToFunction["U'"] = [this] { this->UPrimeMove(); };
     moveToFunction["U2"] = [this] { this->U2Move(); };
@@ -162,6 +145,78 @@ void Cube::rotateMatrix180(Cube::FaceStickers &mat) {
 	}
 }
 
+void Cube::rotateSliceX(int col) {
+    std::array<char, N> temp = getColumnValues(U_stickers, col);
+    copyValues(getColumnPointers(U_stickers, col), getColumnValues(F_stickers, col));
+    copyValues(getColumnPointers(F_stickers, col), getColumnValues(D_stickers, col));
+    copyValues(getColumnPointers(D_stickers, col), getColumnValuesReverse(B_stickers, N-1 - col));
+    copyValues(getColumnPointersReverse(B_stickers, N-1 - col), temp);
+}
+
+void Cube::rotateSliceXPrime(int col) {
+    std::array<char, N> temp = getColumnValues(U_stickers, col);
+    copyValues(getColumnPointers(U_stickers, col), getColumnValuesReverse(B_stickers, N-1 - col));
+    copyValues(getColumnPointersReverse(B_stickers, N-1 - col), getColumnValues(D_stickers, col));
+    copyValues(getColumnPointers(D_stickers, col), getColumnValues(F_stickers, col));
+    copyValues(getColumnPointers(F_stickers, col), temp);
+}
+
+void Cube::rotateSliceX2(int col) {
+    std::array<char, N> temp = getColumnValues(U_stickers, col);
+    copyValues(getColumnPointers(U_stickers, col), getColumnValues(D_stickers, col));
+    copyValues(getColumnPointers(D_stickers, col), temp);
+    temp = getColumnValuesReverse(F_stickers, col);
+    copyValues(getColumnPointers(F_stickers, col), getColumnValuesReverse(B_stickers, N-1 - col));
+    copyValues(getColumnPointers(B_stickers, N-1 - col), temp);
+}
+
+void Cube::rotateSliceY(int row) {
+    std::array<char, N> temp = F_stickers[row];
+    F_stickers[row] = R_stickers[row];
+    R_stickers[row] = B_stickers[row];
+    B_stickers[row] = L_stickers[row];
+    L_stickers[row] = temp;
+}
+
+void Cube::rotateSliceYPrime(int row) {
+    std::array<char, N> temp = F_stickers[row];
+    F_stickers[row] = L_stickers[row];
+    L_stickers[row] = B_stickers[row];
+    B_stickers[row] = R_stickers[row];
+    R_stickers[row] = temp;
+}
+
+void Cube::rotateSliceY2(int row) {
+    std::swap(F_stickers[row], B_stickers[row]);
+    std::swap(L_stickers[row], R_stickers[row]);
+}
+
+void Cube::rotateSliceZ(int row) {
+    std::array<char, N> temp = U_stickers[row];
+    U_stickers[row] = getColumnValuesReverse(L_stickers, row);
+    copyValues(getColumnPointers(L_stickers, row), D_stickers[N-1 - row]);
+    D_stickers[N-1 - row] = getColumnValuesReverse(R_stickers, N-1 - row);
+    copyValues(getColumnPointers(R_stickers, N-1 - row), temp);
+}
+
+void Cube::rotateSliceZPrime(int row) {
+    std::array<char, N> temp = U_stickers[row];
+    U_stickers[row] = getColumnValues(R_stickers, N-1 - row);
+    copyValues(getColumnPointersReverse(R_stickers, N-1 - row), D_stickers[N-1 - row]);
+    D_stickers[N-1 - row] = getColumnValues(L_stickers, row);
+    copyValues(getColumnPointersReverse(L_stickers, row), temp);
+}
+
+void Cube::rotateSliceZ2(int row) {
+    std::swap(U_stickers[row], D_stickers[N-1 - row]);
+    std::reverse(std::begin(U_stickers[row]), std::end(U_stickers[row]));
+    std::reverse(std::begin(D_stickers[N-1 - row]), std::end(D_stickers[N-1 - row]));
+
+    std::array<char, N> temp = getColumnValuesReverse(L_stickers, row);
+    copyValues(getColumnPointers(L_stickers, row), getColumnValuesReverse(R_stickers, N-1 - row));
+    copyValues(getColumnPointers(R_stickers, N-1 - row), temp);
+}
+
 std::array<char, Cube::N> Cube::getColumnValues(Cube::FaceStickers &mat, int col) {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
@@ -205,11 +260,7 @@ void Cube::UMove() {
 
     // Rotate the first row of stickers for the F, R, B and L faces clockwise
     // relative to U face of cube
-    std::array<char, N> temp = F_stickers[0];
-    F_stickers[0] = R_stickers[0];
-    R_stickers[0] = B_stickers[0];
-    B_stickers[0] = L_stickers[0];
-    L_stickers[0] = temp;
+    rotateSliceY(0);
 }
 
 void Cube::UPrimeMove() {
@@ -217,19 +268,14 @@ void Cube::UPrimeMove() {
 
     // Rotate the first row of stickers for the F, R, B and L faces
     // counter-clockwise relative to U face of cube
-    std::array<char, N> temp = F_stickers[0];
-    F_stickers[0] = L_stickers[0];
-    L_stickers[0] = B_stickers[0];
-    B_stickers[0] = R_stickers[0];
-    R_stickers[0] = temp;
+    rotateSliceYPrime(0);
 }
 
 void Cube::U2Move() {
     rotateMatrix180(U_stickers);
 
     // Swap the first row of stickers for the F, R, B and L faces
-    std::swap(F_stickers[0], B_stickers[0]);
-    std::swap(L_stickers[0], R_stickers[0]);
+    rotateSliceY2(0);
 }
 
 void Cube::DMove() {
@@ -237,11 +283,7 @@ void Cube::DMove() {
 
     // Rotate the last row of stickers for the F, R, B and L faces clockwise
     // relative to D face of cube
-    std::array<char, N> temp = F_stickers[N-1];
-    F_stickers[N-1] = L_stickers[N-1];
-    L_stickers[N-1] = B_stickers[N-1];
-    B_stickers[N-1] = R_stickers[N-1];
-    R_stickers[N-1] = temp;
+    rotateSliceYPrime(N-1);
 }
 
 void Cube::DPrimeMove() {
@@ -249,19 +291,14 @@ void Cube::DPrimeMove() {
 
     // Rotate the last row of stickers for the F, R, B and L faces
     // counter-clockwise relative to D face of cube
-    std::array<char, N> temp = F_stickers[N-1];
-    F_stickers[N-1] = R_stickers[N-1];
-    R_stickers[N-1] = B_stickers[N-1];
-    B_stickers[N-1] = L_stickers[N-1];
-    L_stickers[N-1] = temp;
+    rotateSliceY(N-1);
 }
 
 void Cube::D2Move() {
     rotateMatrix180(D_stickers);
 
     // Swap the last row of stickers for the F, R, B and L faces
-    std::swap(F_stickers[N-1], B_stickers[N-1]);
-    std::swap(L_stickers[N-1], R_stickers[N-1]);
+    rotateSliceY2(N-1);
 }
 
 void Cube::FMove() {
@@ -269,11 +306,7 @@ void Cube::FMove() {
 
     // Rotate the appropriate row/column of stickers for the U, R, D, and L
     // faces clockwise relative to F face of cube
-    std::array<char, N> temp = U_stickers[N-1];
-    U_stickers[N-1] = getColumnValuesReverse(L_stickers, N-1);
-    copyValues(getColumnPointers(L_stickers, N-1), D_stickers[0]);
-    D_stickers[0] = getColumnValuesReverse(R_stickers, 0);
-    copyValues(getColumnPointers(R_stickers, 0), temp);
+    rotateSliceZ(N-1);
 }
 
 void Cube::FPrimeMove() {
@@ -281,24 +314,14 @@ void Cube::FPrimeMove() {
 
     // Rotate the appropriate row/column of stickers for the U, R, D, and L
     // faces counter-clockwise relative to F face of cube
-    std::array<char, N> temp = U_stickers[N-1];
-    U_stickers[N-1] = getColumnValues(R_stickers, 0);
-    copyValues(getColumnPointersReverse(R_stickers, 0), D_stickers[0]);
-    D_stickers[0] = getColumnValues(L_stickers, N-1);
-    copyValues(getColumnPointersReverse(L_stickers, N-1), temp);
+    rotateSliceZPrime(N-1);
 }
 
 void Cube::F2Move() {
     rotateMatrix180(F_stickers);
 
     // Swap the appropriate row/column of stickers for the U, R, D, and L faces
-    std::swap(U_stickers[N-1], D_stickers[0]);
-    std::reverse(std::begin(U_stickers[N-1]), std::end(U_stickers[N-1]));
-    std::reverse(std::begin(D_stickers[0]), std::end(D_stickers[0]));
-
-    std::array<char, N> temp = getColumnValuesReverse(L_stickers, N-1);
-    copyValues(getColumnPointers(L_stickers, N-1), getColumnValuesReverse(R_stickers, 0));
-    copyValues(getColumnPointers(R_stickers, 0), temp);
+    rotateSliceZ2(N-1);
 }
 
 void Cube::BMove() {
@@ -306,11 +329,7 @@ void Cube::BMove() {
 
     // Rotate the appropriate row/column of stickers for the U, R, D, and L
     // faces clockwise relative to B face of cube
-    std::array<char, N> temp = U_stickers[0];
-    U_stickers[0] = getColumnValues(R_stickers, N-1);
-    copyValues(getColumnPointersReverse(R_stickers, N-1), D_stickers[N-1]);
-    D_stickers[N-1] = getColumnValues(L_stickers, 0);
-    copyValues(getColumnPointersReverse(L_stickers, 0), temp);
+    rotateSliceZPrime(0);
 
 }
 
@@ -319,24 +338,14 @@ void Cube::BPrimeMove() {
 
     // Rotate the appropriate row/column of stickers for the U, R, D, and L
     // faces counter-clockwise relative to B face of cube
-    std::array<char, N> temp = U_stickers[0];
-    U_stickers[0] = getColumnValuesReverse(L_stickers, 0);
-    copyValues(getColumnPointers(L_stickers, 0), D_stickers[N-1]);
-    D_stickers[N-1] = getColumnValuesReverse(R_stickers, N-1);
-    copyValues(getColumnPointers(R_stickers, N-1), temp);
+    rotateSliceZ(0);
 }
 
 void Cube::B2Move() {
     rotateMatrix180(B_stickers);
 
     // Swap the appropriate row/column of stickers for the U, R, D, and L faces
-    std::swap(U_stickers[0], D_stickers[N-1]);
-    std::reverse(std::begin(U_stickers[0]), std::end(U_stickers[0]));
-    std::reverse(std::begin(D_stickers[N-1]), std::end(D_stickers[N-1]));
-
-    std::array<char, N> temp = getColumnValuesReverse(L_stickers, 0);
-    copyValues(getColumnPointers(L_stickers, 0), getColumnValuesReverse(R_stickers, N-1));
-    copyValues(getColumnPointers(R_stickers, N-1), temp);
+    rotateSliceZ2(0);
 }
 
 void Cube::RMove() {
@@ -344,11 +353,7 @@ void Cube::RMove() {
 
     // Rotate the appropriate column of stickers for the U, F, D, and B
     // faces clockwise relative to R face of cube
-    std::array<char, N> temp = getColumnValues(U_stickers, N-1);
-    copyValues(getColumnPointers(U_stickers, N-1), getColumnValues(F_stickers, N-1));
-    copyValues(getColumnPointers(F_stickers, N-1), getColumnValues(D_stickers, N-1));
-    copyValues(getColumnPointers(D_stickers, N-1), getColumnValuesReverse(B_stickers, 0));
-    copyValues(getColumnPointersReverse(B_stickers, 0), temp);
+    rotateSliceX(N-1);
 
 }
 
@@ -357,23 +362,14 @@ void Cube::RPrimeMove() {
 
     // Rotate the appropriate column of stickers for the U, F, D, and B
     // faces counter-clockwise relative to R face of cube
-    std::array<char, N> temp = getColumnValues(U_stickers, N-1);
-    copyValues(getColumnPointers(U_stickers, N-1), getColumnValuesReverse(B_stickers, 0));
-    copyValues(getColumnPointersReverse(B_stickers, 0), getColumnValues(D_stickers, N-1));
-    copyValues(getColumnPointers(D_stickers, N-1), getColumnValues(F_stickers, N-1));
-    copyValues(getColumnPointers(F_stickers, N-1), temp);
+    rotateSliceXPrime(N-1);
 }
 
 void Cube::R2Move() {
     rotateMatrix180(R_stickers);
 
     // Swap the appropriate column of stickers for the U, F, D, and B faces
-    std::array<char, N> temp = getColumnValues(U_stickers, N-1);
-    copyValues(getColumnPointers(U_stickers, N-1), getColumnValues(D_stickers, N-1));
-    copyValues(getColumnPointers(D_stickers, N-1), temp);
-    temp = getColumnValuesReverse(F_stickers, N-1);
-    copyValues(getColumnPointers(F_stickers, N-1), getColumnValuesReverse(B_stickers, 0));
-    copyValues(getColumnPointers(B_stickers, 0), temp);
+    rotateSliceX2(N-1);
 }
 
 void Cube::LMove() {
@@ -381,11 +377,7 @@ void Cube::LMove() {
 
     // Rotate the appropriate column of stickers for the U, F, D, and B
     // faces clockwise relative to L face of cube
-    std::array<char, N> temp = getColumnValues(U_stickers, 0);
-    copyValues(getColumnPointers(U_stickers, 0), getColumnValuesReverse(B_stickers, N-1));
-    copyValues(getColumnPointersReverse(B_stickers, N-1), getColumnValues(D_stickers, 0));
-    copyValues(getColumnPointers(D_stickers, 0), getColumnValues(F_stickers, 0));
-    copyValues(getColumnPointers(F_stickers, 0), temp);
+    rotateSliceXPrime(0);
 }
 
 void Cube::LPrimeMove() {
@@ -393,23 +385,14 @@ void Cube::LPrimeMove() {
 
     // Rotate the appropriate column of stickers for the U, F, D, and B
     // faces counter-clockwise relative to L face of cube
-    std::array<char, N> temp = getColumnValues(U_stickers, 0);
-    copyValues(getColumnPointers(U_stickers, 0), getColumnValues(F_stickers, 0));
-    copyValues(getColumnPointers(F_stickers, 0), getColumnValues(D_stickers, 0));
-    copyValues(getColumnPointers(D_stickers, 0), getColumnValuesReverse(B_stickers, N-1));
-    copyValues(getColumnPointersReverse(B_stickers, N-1), temp);
+    rotateSliceX(0);
 }
 
 void Cube::L2Move() {
     rotateMatrix180(L_stickers);
 
     // Swap the appropriate column of stickers for the U, F, D, and B faces
-    std::array<char, N> temp = getColumnValues(U_stickers, 0);
-    copyValues(getColumnPointers(U_stickers, 0), getColumnValues(D_stickers, 0));
-    copyValues(getColumnPointers(D_stickers, 0), temp);
-    temp = getColumnValuesReverse(F_stickers, 0);
-    copyValues(getColumnPointers(F_stickers, 0), getColumnValuesReverse(B_stickers, N-1));
-    copyValues(getColumnPointers(B_stickers, N-1), temp);
+    rotateSliceX2(0);
 }
 
 bool Cube::applyAlgorithm(const std::string &algorithm) {
@@ -441,7 +424,7 @@ bool Cube::applyAlgorithm(const std::string &algorithm) {
 
 void Cube::printCube() const {
     for (int i = 0; i < N; i++) {
-        std::cout << std::setw(6) << " ";
+        std::cout << std::setw(N*2) << " ";
         for (int j = 0; j < N; j++) {
             std::cout << U_stickers[i][j] << " ";
         }

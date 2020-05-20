@@ -1,5 +1,6 @@
 #include "cube.hpp"
 #include <iostream>
+#include <cctype>
 
 void simulateRubiksCube();
 

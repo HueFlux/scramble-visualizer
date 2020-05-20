@@ -1,8 +1,10 @@
 #include "cube.hpp"
 #include <iostream>
 #include <iomanip>
+#include <array>
 #include <vector>
 #include <cctype>
+#include <string>
 #include <algorithm>
 
 /* Char values used to represent sticker colors
@@ -74,31 +76,31 @@ Cube::Cube() :
     moveToFunction["R2"] = [this] { this->R2Move(); };
 }
 
-const FaceStickers& Cube::getUStickers() const {
+const Cube::FaceStickers& Cube::getUStickers() const {
     return U_stickers;
 }
 
-const FaceStickers& Cube::getDStickers() const {
+const Cube::FaceStickers& Cube::getDStickers() const {
     return D_stickers;
 }
 
-const FaceStickers& Cube::getFStickers() const {
+const Cube::FaceStickers& Cube::getFStickers() const {
     return F_stickers;
 }
 
-const FaceStickers& Cube::getBStickers() const {
+const Cube::FaceStickers& Cube::getBStickers() const {
     return B_stickers;
 }
 
-const FaceStickers& Cube::getLStickers() const {
+const Cube::FaceStickers& Cube::getLStickers() const {
     return L_stickers;
 }
 
-const FaceStickers& Cube::getRStickers() const {
+const Cube::FaceStickers& Cube::getRStickers() const {
     return R_stickers;
 }
 
-void Cube::rotateMatrixClockwise(FaceStickers &mat) {
+void Cube::rotateMatrixClockwise(Cube::FaceStickers &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N/2; x++) {
         // Consider elements in group of 4 in
@@ -123,7 +125,7 @@ void Cube::rotateMatrixClockwise(FaceStickers &mat) {
 }
 
 // https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
-void Cube::rotateMatrixCounterClockwise(FaceStickers &mat) {
+void Cube::rotateMatrixCounterClockwise(Cube::FaceStickers &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N/2; x++) {
         // Consider elements in group of 4 in
@@ -147,7 +149,7 @@ void Cube::rotateMatrixCounterClockwise(FaceStickers &mat) {
     }
 }
 
-void Cube::rotateMatrix180(FaceStickers &mat) {
+void Cube::rotateMatrix180(Cube::FaceStickers &mat) {
     for (int i = 0; i < N/2; i++) {
 		for (int j = 0; j < N; j++) {
 			std::swap(mat[i][j], mat[N-i-1][N-j-1]);
@@ -160,7 +162,7 @@ void Cube::rotateMatrix180(FaceStickers &mat) {
 	}
 }
 
-std::array<char, N> Cube::getColumnValues(FaceStickers &mat, int col) {
+std::array<char, Cube::N> Cube::getColumnValues(Cube::FaceStickers &mat, int col) {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = mat[i][col];
@@ -168,7 +170,7 @@ std::array<char, N> Cube::getColumnValues(FaceStickers &mat, int col) {
     return column_array;
 }
 
-std::array<char, N> Cube::getColumnValuesReverse(FaceStickers &mat, int col) {
+std::array<char, Cube::N> Cube::getColumnValuesReverse(Cube::FaceStickers &mat, int col) {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = mat[N-1-i][col];
@@ -176,7 +178,7 @@ std::array<char, N> Cube::getColumnValuesReverse(FaceStickers &mat, int col) {
     return column_array;
 }
 
-std::array<char*, N> Cube::getColumnPointers(FaceStickers &mat, int col) {
+std::array<char*, Cube::N> Cube::getColumnPointers(Cube::FaceStickers &mat, int col) {
     std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[i][col];
@@ -184,7 +186,7 @@ std::array<char*, N> Cube::getColumnPointers(FaceStickers &mat, int col) {
     return column_array;
 }
 
-std::array<char*, N> Cube::getColumnPointersReverse(FaceStickers &mat, int col) {
+std::array<char*, Cube::N> Cube::getColumnPointersReverse(Cube::FaceStickers &mat, int col) {
     std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[N-1-i][col];

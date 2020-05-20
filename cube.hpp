@@ -5,13 +5,12 @@
 #include <unordered_map>
 #include <string>
 #include <functional>
-#include <iostream>
-
-const int N = 3; // Size of Rubik's Cube
-using FaceStickers = std::array<std::array<char, N>, N>;
 
 class Cube {
     public:
+        static const int N = 3; // Size of Rubik's Cube
+        using FaceStickers = std::array<std::array<char, N>, N>;
+
         // Class constructor that initializes sticker values for
         // all the face matrices
         Cube();

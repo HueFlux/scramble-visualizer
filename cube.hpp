@@ -8,7 +8,7 @@
 
 class Cube {
     public:
-        static const int N = 3; // Size of Rubik's Cube
+        static const int N = 5; // Size of Rubik's Cube
         using FaceStickers = std::array<std::array<char, N>, N>;
 
         // Class constructor that initializes sticker values for all the
@@ -22,6 +22,30 @@ class Cube {
         const FaceStickers& getBStickers() const;
         const FaceStickers& getLStickers() const;
         const FaceStickers& getRStickers() const;
+
+        // Method that takes a series of moves as a string and applies
+        // them to the Rubik's Cube
+        // Returns true if algorithm is successful and false otherwise
+        bool applyAlgorithm(const std::string &algorithm);
+
+        // Method that prints a 2D representation of the Rubik's Cube
+        // If color_output is set to true, stickers will be represented
+        // by colored blocks
+        void printCube(bool color_output = false) const;
+
+    private:
+        // Two-dimensional arrays that store the individual sticker values
+        // for each face of the Rubik's Cube
+        FaceStickers U_stickers;
+        FaceStickers D_stickers;
+        FaceStickers F_stickers;
+        FaceStickers B_stickers;
+        FaceStickers L_stickers;
+        FaceStickers R_stickers;
+
+        // Unordered map which maps strings representing moves that can be
+        // performed on the Rubik's Cube to their corresponding functions
+        std::unordered_map<std::string, std::function<void ()>> moveToFunction;
 
         // Methods representing all distinct types of moves on a Rubik's Cube
         // These functions will define how all faces will be affected
@@ -44,27 +68,26 @@ class Cube {
         void LPrimeMove();
         void L2Move();
 
-        // Method that takes a series of moves as a string and applies
-        // them to the Rubik's Cube
-        // Returns true if algorithm is successful and false otherwise
-        bool applyAlgorithm(const std::string &algorithm);
-
-        // Method that prints a 2D representation of the Rubik's Cube
-        void printCube() const;
-
-    private:
-        // Two-dimensional arrays that store the individual sticker values
-        // for each face of the Rubik's Cube
-        FaceStickers U_stickers;
-        FaceStickers D_stickers;
-        FaceStickers F_stickers;
-        FaceStickers B_stickers;
-        FaceStickers L_stickers;
-        FaceStickers R_stickers;
-
-        // Unordered map which maps strings representing moves that can be
-        // performed on the Rubik's Cube to their corresponding functions
-        std::unordered_map<std::string, std::function<void ()>> moveToFunction;
+        // Methods for outer block moves on higher order cubes
+        // The slices parameter specifies how many layers to turn
+        void UWMove(int slices = 2);
+        void UWPrimeMove(int slices = 2);
+        void UW2Move(int slices = 2);
+        void DWMove(int slices = 2);
+        void DWPrimeMove(int slices = 2);
+        void DW2Move(int slices = 2);
+        void FWMove(int slices = 2);
+        void FWPrimeMove(int slices = 2);
+        void FW2Move(int slices = 2);
+        void BWMove(int slices = 2);
+        void BWPrimeMove(int slices = 2);
+        void BW2Move(int slices = 2);
+        void RWMove(int slices = 2);
+        void RWPrimeMove(int slices = 2);
+        void RW2Move(int slices = 2);
+        void LWMove(int slices = 2);
+        void LWPrimeMove(int slices = 2);
+        void LW2Move(int slices = 2);
 
         // Helper functions used to rotate the values in the face matrices
         // by 90 degrees
@@ -98,22 +121,25 @@ class Cube {
 
         // Helper function used to access the columns in the face matrices
         // as std::arrays in top-down order
-        std::array<char, N> getColumnValues(FaceStickers &mat, int col);
+        std::array<char, N> getColumnValues(const FaceStickers &mat, int col) const;
         // Helper function used to access the columns in the face matrices
         // as std::arrays in bottom-up order
-        std::array<char, N> getColumnValuesReverse(FaceStickers &mat, int col);
+        std::array<char, N> getColumnValuesReverse(const FaceStickers &mat, int col) const;
 
         // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in top-down order
-        std::array<char*, N> getColumnPointers(FaceStickers &mat, int col);
+        std::array<char*, N> getColumnPointers(FaceStickers &mat, int col) const;
         // Helper function used to access the columns in the face matrices
         // as std::arrays of pointers in bottom-up order
-        std::array<char*, N> getColumnPointersReverse(FaceStickers &mat, int col);
+        std::array<char*, N> getColumnPointersReverse(FaceStickers &mat, int col) const;
 
         // Helper function used to copy the values of an array of chars into
         // an array of char pointers
         void copyValues(std::array<char*, N> pointers, const std::array<char, N>& values);
 
+        // Helper function to get colored block for colored output
+        // in printCube() method
+        std::string getStickerColor(char sticker) const;
 };
 
 #endif

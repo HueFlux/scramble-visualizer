@@ -57,6 +57,117 @@ Cube::Cube() {
     moveToFunction["R"]  = [this] { this->RMove(); };
     moveToFunction["R'"] = [this] { this->RPrimeMove(); };
     moveToFunction["R2"] = [this] { this->R2Move(); };
+
+    // Add outer block moves for 4x4x4 and up
+    if (N > 3) {
+        moveToFunction["UW"]  = [this] { this->UWMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "UW";
+            moveToFunction[move]  = [this, i] { this->UWMove(i); };
+        }
+
+        moveToFunction["UW'"] = [this] { this->UWPrimeMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "UW'";
+            moveToFunction[move] = [this, i] { this->UWPrimeMove(i); };
+        }
+
+        moveToFunction["UW2"] = [this] { this->UW2Move(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "UW2";
+            moveToFunction[move] = [this, i] { this->UW2Move(i); };
+        }
+
+        moveToFunction["DW"]  = [this] { this->DWMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "DW";
+            moveToFunction[move]  = [this, i] { this->DWMove(i); };
+        }
+
+        moveToFunction["DW'"] = [this] { this->DWPrimeMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "DW'";
+            moveToFunction[move] = [this, i] { this->DWPrimeMove(i); };
+        }
+
+        moveToFunction["DW2"] = [this] { this->DW2Move(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "DW2";
+            moveToFunction[move] = [this, i] { this->DW2Move(i); };
+        }
+
+        moveToFunction["FW"]  = [this] { this->FWMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "FW";
+            moveToFunction[move]  = [this, i] { this->FWMove(i); };
+        }
+
+        moveToFunction["FW'"] = [this] { this->FWPrimeMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "FW'";
+            moveToFunction[move] = [this, i] { this->FWPrimeMove(i); };
+        }
+
+        moveToFunction["FW2"] = [this] { this->FW2Move(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "FW2";
+            moveToFunction[move] = [this, i] { this->FW2Move(i); };
+        }
+
+        moveToFunction["BW"]  = [this] { this->BWMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "BW";
+            moveToFunction[move]  = [this, i] { this->BWMove(i); };
+        }
+
+        moveToFunction["BW'"] = [this] { this->BWPrimeMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "BW'";
+            moveToFunction[move] = [this, i] { this->BWPrimeMove(i); };
+        }
+
+        moveToFunction["BW2"] = [this] { this->BW2Move(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "BW2";
+            moveToFunction[move] = [this, i] { this->BW2Move(i); };
+        }
+
+        moveToFunction["LW"]  = [this] { this->LWMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "LW";
+            moveToFunction[move]  = [this, i] { this->LWMove(i); };
+        }
+
+        moveToFunction["LW'"] = [this] { this->LWPrimeMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "LW'";
+            moveToFunction[move] = [this, i] { this->LWPrimeMove(i); };
+        }
+
+        moveToFunction["LW2"] = [this] { this->LW2Move(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "LW2";
+            moveToFunction[move] = [this, i] { this->LW2Move(i); };
+        }
+
+        moveToFunction["RW"]  = [this] { this->RWMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "RW";
+            moveToFunction[move]  = [this, i] { this->RWMove(i); };
+        }
+
+        moveToFunction["RW'"] = [this] { this->RWPrimeMove(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "RW'";
+            moveToFunction[move] = [this, i] { this->RWPrimeMove(i); };
+        }
+
+        moveToFunction["RW2"] = [this] { this->RW2Move(); };
+        for (int i = 2; i < N-1; i++) {
+            std::string move = std::to_string(i) + "RW2";
+            moveToFunction[move] = [this, i] { this->RW2Move(i); };
+        }
+    }
 }
 
 const Cube::FaceStickers& Cube::getUStickers() const {
@@ -217,7 +328,7 @@ void Cube::rotateSliceZ2(int row) {
     copyValues(getColumnPointers(R_stickers, N-1 - row), temp);
 }
 
-std::array<char, Cube::N> Cube::getColumnValues(Cube::FaceStickers &mat, int col) {
+std::array<char, Cube::N> Cube::getColumnValues(const Cube::FaceStickers &mat, int col) const {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = mat[i][col];
@@ -225,7 +336,7 @@ std::array<char, Cube::N> Cube::getColumnValues(Cube::FaceStickers &mat, int col
     return column_array;
 }
 
-std::array<char, Cube::N> Cube::getColumnValuesReverse(Cube::FaceStickers &mat, int col) {
+std::array<char, Cube::N> Cube::getColumnValuesReverse(const Cube::FaceStickers &mat, int col) const {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = mat[N-1-i][col];
@@ -233,7 +344,7 @@ std::array<char, Cube::N> Cube::getColumnValuesReverse(Cube::FaceStickers &mat, 
     return column_array;
 }
 
-std::array<char*, Cube::N> Cube::getColumnPointers(Cube::FaceStickers &mat, int col) {
+std::array<char*, Cube::N> Cube::getColumnPointers(Cube::FaceStickers &mat, int col) const {
     std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[i][col];
@@ -241,7 +352,7 @@ std::array<char*, Cube::N> Cube::getColumnPointers(Cube::FaceStickers &mat, int 
     return column_array;
 }
 
-std::array<char*, Cube::N> Cube::getColumnPointersReverse(Cube::FaceStickers &mat, int col) {
+std::array<char*, Cube::N> Cube::getColumnPointersReverse(Cube::FaceStickers &mat, int col) const {
     std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[N-1-i][col];
@@ -395,6 +506,151 @@ void Cube::L2Move() {
     rotateSliceX2(0);
 }
 
+void Cube::UWMove(int slices) {
+    UMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceY(i);
+    }
+}
+
+void Cube::UWPrimeMove(int slices) {
+    UPrimeMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceYPrime(i);
+    }
+}
+
+void Cube::UW2Move(int slices) {
+    U2Move();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceY2(i);
+    }
+}
+
+void Cube::DWMove(int slices) {
+    DMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceYPrime(N-1 - i);
+    }
+}
+
+void Cube::DWPrimeMove(int slices) {
+    DPrimeMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceY(N-1 - i);
+    }
+}
+
+void Cube::DW2Move(int slices) {
+    D2Move();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceY2(N-1 - i);
+    }
+}
+
+void Cube::FWMove(int slices) {
+    FMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceZ(N-1 - i);
+    }
+}
+
+void Cube::FWPrimeMove(int slices) {
+    FPrimeMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceZPrime(N-1 - i);
+    }
+}
+
+void Cube::FW2Move(int slices) {
+    F2Move();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceZ2(N-1 - i);
+    }
+}
+
+void Cube::BWMove(int slices) {
+    BMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceZPrime(i);
+    }
+}
+
+void Cube::BWPrimeMove(int slices) {
+    BPrimeMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceZ(i);
+    }
+}
+
+void Cube::BW2Move(int slices) {
+    B2Move();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceZ2(i);
+    }
+}
+
+void Cube::RWMove(int slices) {
+    RMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceX(N-1 - i);
+    }
+}
+
+void Cube::RWPrimeMove(int slices) {
+    RPrimeMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceXPrime(N-1 - i);
+    }
+}
+
+void Cube::RW2Move(int slices) {
+    R2Move();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceX2(N-1 - i);
+    }
+}
+
+void Cube::LWMove(int slices) {
+    LMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceXPrime(i);
+    }
+}
+
+void Cube::LWPrimeMove(int slices) {
+    LPrimeMove();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceX(i);
+    }
+}
+
+void Cube::LW2Move(int slices) {
+    L2Move();
+
+    for(int i = 1; i < slices; i++) {
+        rotateSliceX2(i);
+    }
+}
+
+
 bool Cube::applyAlgorithm(const std::string &algorithm) {
     std::vector<std::string> moves;
     std::string current_move = "";
@@ -422,27 +678,37 @@ bool Cube::applyAlgorithm(const std::string &algorithm) {
     return true;
 }
 
-void Cube::printCube() const {
+void Cube::printCube(bool color_output) const {
     for (int i = 0; i < N; i++) {
         std::cout << std::setw(N*2) << " ";
         for (int j = 0; j < N; j++) {
-            std::cout << U_stickers[i][j] << " ";
+            std::string sticker = color_output ? getStickerColor(U_stickers[i][j])
+                                               : std::string(1, U_stickers[i][j]);
+            std::cout << sticker << " ";
         }
         std::cout << std::endl;
     }
 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            std::cout << L_stickers[i][j] << " ";
+            std::string sticker = color_output ? getStickerColor(L_stickers[i][j])
+                                               : std::string(1, L_stickers[i][j]);
+            std::cout << sticker << " ";
         }
         for (int j = 0; j < N; j++) {
-            std::cout << F_stickers[i][j] << " ";
+            std::string sticker = color_output ? getStickerColor(F_stickers[i][j])
+                                               : std::string(1, F_stickers[i][j]);
+            std::cout << sticker << " ";
         }
         for (int j = 0; j < N; j++) {
-            std::cout << R_stickers[i][j] << " ";
+            std::string sticker = color_output ? getStickerColor(R_stickers[i][j])
+                                               : std::string(1, R_stickers[i][j]);
+            std::cout << sticker << " ";
         }
         for (int j = 0; j < N; j++) {
-            std::cout << B_stickers[i][j] << " ";
+            std::string sticker = color_output ? getStickerColor(B_stickers[i][j])
+                                               : std::string(1, B_stickers[i][j]);
+            std::cout << sticker << " ";
         }
         std::cout << std::endl;
     }
@@ -450,9 +716,29 @@ void Cube::printCube() const {
     for (int i = 0; i < N; i++) {
         std::cout << std::setw(N*2) << " ";
         for (int j = 0; j < N; j++) {
-            std::cout << D_stickers[i][j] << " ";
+            std::string sticker = color_output ? getStickerColor(D_stickers[i][j])
+                                               : std::string(1, D_stickers[i][j]);
+            std::cout << sticker << " ";
         }
         std::cout << std::endl;
     }
+}
 
+std::string Cube::getStickerColor(char sticker) const {
+    switch (sticker) {
+        case 'W':
+            return "\033[1;37m█\033[0m";
+        case 'Y':
+            return "\033[1;33m█\033[0m";
+        case 'G':
+            return "\033[1;32m█\033[0m";
+        case 'B':
+            return "\033[1;34m█\033[0m";
+        case 'O':
+            return "\033[1;35m█\033[0m";
+        case 'R':
+            return "\033[1;31m█\033[0m";
+        default:
+            return std::to_string(sticker);
+    }
 }

@@ -15,7 +15,7 @@ void simulateRubiksCube() {
 
     while (true) {
         std::cout << std::endl;
-        rubiks_cube.printCube();
+        rubiks_cube.printCube(true);
         std::cout << std::endl;
 
         std::cout << "Enter a move or algorithm to execute (Q to quit): ";

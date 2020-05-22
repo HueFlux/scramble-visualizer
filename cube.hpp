@@ -23,15 +23,16 @@ class Cube {
         const FaceStickers& getLStickers() const;
         const FaceStickers& getRStickers() const;
 
-        // Method that takes a series of moves as a string and applies
-        // them to the Rubik's Cube
-        // Returns true if algorithm is successful and false otherwise
+        // Method that takes a series of moves separated by spaces as a string
+        // and applies them to the Rubik's Cube
+        // Returns true if algorithm is successfully executed
+        // and false otherwise
         bool applyAlgorithm(const std::string &algorithm);
 
         // Method that prints a 2D representation of the Rubik's Cube
-        // If color_output is set to true, stickers will be represented
-        // by colored blocks
-        void printCube(bool color_output = false) const;
+        // If color_output is true, stickers will be represented by colored
+        // blocks, otherwise stickers are represented by characters
+        void printCube(bool color_output = true) const;
 
     private:
         // Two-dimensional arrays that store the individual sticker values

@@ -14,9 +14,9 @@ void simulateRubiksCube() {
     std::string algorithm;
 
     while (true) {
-        std::cout << std::endl;
-        rubiks_cube.printCube(true);
-        std::cout << std::endl;
+        std::cout << '\n';
+        rubiks_cube.printCube();
+        std::cout << '\n';
 
         std::cout << "Enter a move or algorithm to execute (Q to quit): ";
         std::getline(std::cin, algorithm);
@@ -25,7 +25,7 @@ void simulateRubiksCube() {
             break;
         }
         if(!rubiks_cube.applyAlgorithm(algorithm)) {
-            std::cout << "Invalid move(s)." << std::endl;
+            std::cout << "\033[1;31mInvalid move(s).\033[0m" << '\n';
         }
     }
 }

@@ -8,7 +8,6 @@
 #include <algorithm>
 
 /* Char values used to represent sticker colors
- * 'N' = None
  * 'W' = White
  * 'Y' = Yellow
  * 'G' = Green
@@ -680,47 +679,60 @@ bool Cube::applyAlgorithm(const std::string &algorithm) {
 
 void Cube::printCube(bool color_output) const {
     for (int i = 0; i < N; i++) {
-        std::cout << std::setw(N*2) << " ";
+        std::cout << std::setw(N*2 + 1) << ' ';
         for (int j = 0; j < N; j++) {
             std::string sticker = color_output ? getStickerColor(U_stickers[i][j])
                                                : std::string(1, U_stickers[i][j]);
-            std::cout << sticker << " ";
+            std::cout << sticker << ' ';
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
+
+    std::cout << '\n';
 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             std::string sticker = color_output ? getStickerColor(L_stickers[i][j])
                                                : std::string(1, L_stickers[i][j]);
-            std::cout << sticker << " ";
+            std::cout << sticker << ' ';
         }
+
+        std::cout << ' ';
+
         for (int j = 0; j < N; j++) {
             std::string sticker = color_output ? getStickerColor(F_stickers[i][j])
                                                : std::string(1, F_stickers[i][j]);
-            std::cout << sticker << " ";
+            std::cout << sticker << ' ';
         }
+
+        std::cout << ' ';
+
         for (int j = 0; j < N; j++) {
             std::string sticker = color_output ? getStickerColor(R_stickers[i][j])
                                                : std::string(1, R_stickers[i][j]);
-            std::cout << sticker << " ";
+            std::cout << sticker << ' ';
         }
+
+        std::cout << ' ';
+
         for (int j = 0; j < N; j++) {
             std::string sticker = color_output ? getStickerColor(B_stickers[i][j])
                                                : std::string(1, B_stickers[i][j]);
-            std::cout << sticker << " ";
+            std::cout << sticker << ' ';
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 
+    std::cout << '\n';
+
     for (int i = 0; i < N; i++) {
-        std::cout << std::setw(N*2) << " ";
+        std::cout << std::setw(N*2 + 1) << ' ';
         for (int j = 0; j < N; j++) {
             std::string sticker = color_output ? getStickerColor(D_stickers[i][j])
                                                : std::string(1, D_stickers[i][j]);
-            std::cout << sticker << " ";
+            std::cout << sticker << ' ';
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 }
 

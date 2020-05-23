@@ -62,7 +62,7 @@ Cube::Cube() {
         moveToFunction["UW"]  = [this] { this->UWMove(); };
         for (int i = 2; i < N-1; i++) {
             std::string move = std::to_string(i) + "UW";
-            moveToFunction[move]  = [this, i] { this->UWMove(i); };
+            moveToFunction[move] = [this, i] { this->UWMove(i); };
         }
 
         moveToFunction["UW'"] = [this] { this->UWPrimeMove(); };
@@ -80,7 +80,7 @@ Cube::Cube() {
         moveToFunction["DW"]  = [this] { this->DWMove(); };
         for (int i = 2; i < N-1; i++) {
             std::string move = std::to_string(i) + "DW";
-            moveToFunction[move]  = [this, i] { this->DWMove(i); };
+            moveToFunction[move] = [this, i] { this->DWMove(i); };
         }
 
         moveToFunction["DW'"] = [this] { this->DWPrimeMove(); };
@@ -98,7 +98,7 @@ Cube::Cube() {
         moveToFunction["FW"]  = [this] { this->FWMove(); };
         for (int i = 2; i < N-1; i++) {
             std::string move = std::to_string(i) + "FW";
-            moveToFunction[move]  = [this, i] { this->FWMove(i); };
+            moveToFunction[move] = [this, i] { this->FWMove(i); };
         }
 
         moveToFunction["FW'"] = [this] { this->FWPrimeMove(); };
@@ -116,7 +116,7 @@ Cube::Cube() {
         moveToFunction["BW"]  = [this] { this->BWMove(); };
         for (int i = 2; i < N-1; i++) {
             std::string move = std::to_string(i) + "BW";
-            moveToFunction[move]  = [this, i] { this->BWMove(i); };
+            moveToFunction[move] = [this, i] { this->BWMove(i); };
         }
 
         moveToFunction["BW'"] = [this] { this->BWPrimeMove(); };
@@ -134,7 +134,7 @@ Cube::Cube() {
         moveToFunction["LW"]  = [this] { this->LWMove(); };
         for (int i = 2; i < N-1; i++) {
             std::string move = std::to_string(i) + "LW";
-            moveToFunction[move]  = [this, i] { this->LWMove(i); };
+            moveToFunction[move] = [this, i] { this->LWMove(i); };
         }
 
         moveToFunction["LW'"] = [this] { this->LWPrimeMove(); };
@@ -152,7 +152,7 @@ Cube::Cube() {
         moveToFunction["RW"]  = [this] { this->RWMove(); };
         for (int i = 2; i < N-1; i++) {
             std::string move = std::to_string(i) + "RW";
-            moveToFunction[move]  = [this, i] { this->RWMove(i); };
+            moveToFunction[move] = [this, i] { this->RWMove(i); };
         }
 
         moveToFunction["RW'"] = [this] { this->RWPrimeMove(); };

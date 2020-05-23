@@ -23,16 +23,20 @@ class Cube {
         const FaceStickers& getLStickers() const;
         const FaceStickers& getRStickers() const;
 
-        // Method that takes a series of moves separated by spaces as a string
+        // Takes a series of moves separated by spaces as a string
         // and applies them to the Rubik's Cube
         // Returns true if algorithm is successfully executed
         // and false otherwise
         bool applyAlgorithm(const std::string &algorithm);
 
-        // Method that prints a 2D representation of the Rubik's Cube
+        // Prints a 2D representation of the Rubik's Cube
         // If color_output is true, stickers will be represented by colored
         // blocks, otherwise stickers are represented by characters
         void printCube(bool color_output = true) const;
+
+        // Resets all sticker values in the face matrices to their
+        // initial solved state
+        void reset();
 
     private:
         // Two-dimensional arrays that store the individual sticker values
@@ -48,47 +52,26 @@ class Cube {
         // performed on the Rubik's Cube to their corresponding functions
         std::unordered_map<std::string, std::function<void ()>> moveToFunction;
 
-        // Methods representing all distinct types of moves on a Rubik's Cube
-        // These functions will define how all faces will be affected
-        void UMove();
-        void UPrimeMove();
-        void U2Move();
-        void DMove();
-        void DPrimeMove();
-        void D2Move();
-        void FMove();
-        void FPrimeMove();
-        void F2Move();
-        void BMove();
-        void BPrimeMove();
-        void B2Move();
-        void RMove();
-        void RPrimeMove();
-        void R2Move();
-        void LMove();
-        void LPrimeMove();
-        void L2Move();
-
-        // Methods for outer block moves on higher order cubes
+        // Methods representing all distinct types of face moves on a Rubik's Cube
         // The slices parameter specifies how many layers to turn
-        void UWMove(int slices = 2);
-        void UWPrimeMove(int slices = 2);
-        void UW2Move(int slices = 2);
-        void DWMove(int slices = 2);
-        void DWPrimeMove(int slices = 2);
-        void DW2Move(int slices = 2);
-        void FWMove(int slices = 2);
-        void FWPrimeMove(int slices = 2);
-        void FW2Move(int slices = 2);
-        void BWMove(int slices = 2);
-        void BWPrimeMove(int slices = 2);
-        void BW2Move(int slices = 2);
-        void RWMove(int slices = 2);
-        void RWPrimeMove(int slices = 2);
-        void RW2Move(int slices = 2);
-        void LWMove(int slices = 2);
-        void LWPrimeMove(int slices = 2);
-        void LW2Move(int slices = 2);
+        void UMove(int slices = 1);
+        void UPrimeMove(int slices = 1);
+        void U2Move(int slices = 1);
+        void DMove(int slices = 1);
+        void DPrimeMove(int slices = 1);
+        void D2Move(int slices = 1);
+        void FMove(int slices = 1);
+        void FPrimeMove(int slices = 1);
+        void F2Move(int slices = 1);
+        void BMove(int slices = 1);
+        void BPrimeMove(int slices = 1);
+        void B2Move(int slices = 1);
+        void RMove(int slices = 1);
+        void RPrimeMove(int slices = 1);
+        void R2Move(int slices = 1);
+        void LMove(int slices = 1);
+        void LPrimeMove(int slices = 1);
+        void L2Move(int slices = 1);
 
         // Helper functions used to rotate the values in the face matrices
         // by 90 degrees

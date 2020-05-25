@@ -50,7 +50,7 @@ class Cube {
 
         // Unordered map which maps strings representing moves that can be
         // performed on the Rubik's Cube to their corresponding functions
-        std::unordered_map<std::string, std::function<void ()>> moveToFunction;
+        std::unordered_map<std::string, std::function<void()>> moveToFunction;
 
         // Methods representing all distinct types of face moves on a Rubik's Cube
         // The slices parameter specifies how many layers to turn
@@ -119,7 +119,7 @@ class Cube {
 
         // Helper function used to copy the values of an array of chars into
         // an array of char pointers
-        void copyValues(std::array<char*, N> pointers, const std::array<char, N>& values);
+        void copyValues(std::array<char*, N> pointers, const std::array<char, N> &values);
 
         // Helper function to get colored block for colored output
         // in printCube() method

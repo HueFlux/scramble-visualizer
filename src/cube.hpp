@@ -1,12 +1,137 @@
-#include "cube.hpp"
+#ifndef CUBE_HPP
+#define CUBE_HPP
+
+#include <array>
+#include <unordered_map>
+#include <string>
+#include <functional>
+
 #include <iostream>
 #include <iomanip>
-#include <array>
-#include <vector>
 #include <cctype>
-#include <string>
+#include <vector>
 #include <algorithm>
-#include <functional>
+
+template<size_t SIZE>
+class Cube {
+    public:
+        static const int N = SIZE; // Size of Rubik's Cube
+        using FaceStickers = std::array<std::array<char, N>, N>;
+
+        // Class constructor that initializes sticker values for all the
+        // face matrices as well as populates moveToFunction unordered_map
+        Cube();
+
+        // Getter methods to access face matrices
+        const FaceStickers& getUStickers() const;
+        const FaceStickers& getDStickers() const;
+        const FaceStickers& getFStickers() const;
+        const FaceStickers& getBStickers() const;
+        const FaceStickers& getLStickers() const;
+        const FaceStickers& getRStickers() const;
+
+        // Takes a series of moves separated by spaces as a string
+        // and applies them to the Rubik's Cube
+        // Returns true if algorithm is successfully executed
+        // and false otherwise
+        bool applyAlgorithm(const std::string &algorithm);
+
+        // Prints a 2D representation of the Rubik's Cube
+        // If color_output is true, stickers will be represented by colored
+        // blocks, otherwise stickers are represented by characters
+        void printCube(bool color_output = true) const;
+
+        // Resets all sticker values in the face matrices to their
+        // initial solved state
+        void reset();
+
+    private:
+        // Two-dimensional arrays that store the individual sticker values
+        // for each face of the Rubik's Cube
+        FaceStickers U_stickers;
+        FaceStickers D_stickers;
+        FaceStickers F_stickers;
+        FaceStickers B_stickers;
+        FaceStickers L_stickers;
+        FaceStickers R_stickers;
+
+        // Unordered map which maps strings representing moves that can be
+        // performed on the Rubik's Cube to their corresponding functions
+        std::unordered_map<std::string, std::function<void()>> moveToFunction;
+
+        // Methods representing all distinct types of face moves on a Rubik's Cube
+        // The slices parameter specifies how many layers to turn
+        void UMove(int slices = 1);
+        void UPrimeMove(int slices = 1);
+        void U2Move(int slices = 1);
+        void DMove(int slices = 1);
+        void DPrimeMove(int slices = 1);
+        void D2Move(int slices = 1);
+        void FMove(int slices = 1);
+        void FPrimeMove(int slices = 1);
+        void F2Move(int slices = 1);
+        void BMove(int slices = 1);
+        void BPrimeMove(int slices = 1);
+        void B2Move(int slices = 1);
+        void RMove(int slices = 1);
+        void RPrimeMove(int slices = 1);
+        void R2Move(int slices = 1);
+        void LMove(int slices = 1);
+        void LPrimeMove(int slices = 1);
+        void L2Move(int slices = 1);
+
+        // Helper functions used to rotate the values in the face matrices
+        // by 90 degrees
+        void rotateMatrixClockwise(FaceStickers &mat);
+        void rotateMatrixCounterClockwise(FaceStickers &mat);
+        // Helper function used to rotate the values in the face matrices
+        // by 180 degrees
+        void rotateMatrix180(FaceStickers &mat);
+
+        // Helper functions used to rotate slices of stickers in the direction
+        // of an x or x' cube rotation
+        // The col parameter corresponds to the column of stickers on the F
+        // face that belong to the slice
+        void rotateSliceX(int col);
+        void rotateSliceXPrime(int col);
+        void rotateSliceX2(int col);
+        // Helper functions used to rotate slices of stickers in the direction
+        // of a y or y' cube rotation
+        // The row parameter corresponds to the row of stickers on the F
+        // face that belong to the slice
+        void rotateSliceY(int row);
+        void rotateSliceYPrime(int row);
+        void rotateSliceY2(int row);
+        // Helper functions used to rotate slices of stickers in the direction
+        // of a z or z' cube rotation
+        // The row parameter corresponds to the row of stickers on the U
+        // face that belong to the slice
+        void rotateSliceZ(int row);
+        void rotateSliceZPrime(int row);
+        void rotateSliceZ2(int row);
+
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays in top-down order
+        std::array<char, N> getColumnValues(const FaceStickers &mat, int col) const;
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays in bottom-up order
+        std::array<char, N> getColumnValuesReverse(const FaceStickers &mat, int col) const;
+
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays of pointers in top-down order
+        std::array<char*, N> getColumnPointers(FaceStickers &mat, int col) const;
+        // Helper function used to access the columns in the face matrices
+        // as std::arrays of pointers in bottom-up order
+        std::array<char*, N> getColumnPointersReverse(FaceStickers &mat, int col) const;
+
+        // Helper function used to copy the values of an array of chars into
+        // an array of char pointers
+        void copyValues(std::array<char*, N> pointers, const std::array<char, N> &values);
+
+        // Helper function to get colored block for colored output
+        // in printCube() method
+        std::string getStickerColor(char sticker) const;
+};
 
 /* Char values used to represent sticker colors
  * 'W' = White
@@ -19,7 +144,8 @@
 
 // Intializes the Cube face matrices to the standard Rubik's Cube
 // color scheme with White on the top face and Green on the front face
-Cube::Cube() {
+template<size_t SIZE>
+Cube<SIZE>::Cube() {
     for (auto& row : U_stickers) {
         row.fill('W');
     }
@@ -90,31 +216,38 @@ Cube::Cube() {
     }
 }
 
-const Cube::FaceStickers& Cube::getUStickers() const {
+template <size_t SIZE>
+const typename Cube<SIZE>::FaceStickers& Cube<SIZE>::getUStickers() const {
     return U_stickers;
 }
 
-const Cube::FaceStickers& Cube::getDStickers() const {
+template <size_t SIZE>
+const typename Cube<SIZE>::FaceStickers& Cube<SIZE>::getDStickers() const {
     return D_stickers;
 }
 
-const Cube::FaceStickers& Cube::getFStickers() const {
+template <size_t SIZE>
+const typename Cube<SIZE>::FaceStickers& Cube<SIZE>::getFStickers() const {
     return F_stickers;
 }
 
-const Cube::FaceStickers& Cube::getBStickers() const {
+template <size_t SIZE>
+const typename Cube<SIZE>::FaceStickers& Cube<SIZE>::getBStickers() const {
     return B_stickers;
 }
 
-const Cube::FaceStickers& Cube::getLStickers() const {
+template <size_t SIZE>
+const typename Cube<SIZE>::FaceStickers& Cube<SIZE>::getLStickers() const {
     return L_stickers;
 }
 
-const Cube::FaceStickers& Cube::getRStickers() const {
+template <size_t SIZE>
+const typename Cube<SIZE>::FaceStickers& Cube<SIZE>::getRStickers() const {
     return R_stickers;
 }
 
-bool Cube::applyAlgorithm(const std::string &algorithm) {
+template <size_t SIZE>
+bool Cube<SIZE>::applyAlgorithm(const std::string &algorithm) {
     std::vector<std::string> moves;
     std::string current_move = "";
     // Parse moves in algorithm separated by spaces
@@ -141,7 +274,8 @@ bool Cube::applyAlgorithm(const std::string &algorithm) {
     return true;
 }
 
-void Cube::printCube(bool color_output) const {
+template <size_t SIZE>
+void Cube<SIZE>::printCube(bool color_output) const {
     for (int i = 0; i < N; i++) {
         std::cout << std::setw(N*2 + 1) << ' ';
         for (int j = 0; j < N; j++) {
@@ -200,7 +334,8 @@ void Cube::printCube(bool color_output) const {
     }
 }
 
-void Cube::reset() {
+template <size_t SIZE>
+void Cube<SIZE>::reset() {
     for (auto& row : U_stickers) {
         row.fill('W');
     }
@@ -221,7 +356,8 @@ void Cube::reset() {
     }
 }
 
-std::string Cube::getStickerColor(char sticker) const {
+template <size_t SIZE>
+std::string Cube<SIZE>::getStickerColor(char sticker) const {
     switch (sticker) {
         case 'W':
             return "\033[1;37m█\033[0m";
@@ -240,7 +376,8 @@ std::string Cube::getStickerColor(char sticker) const {
     }
 }
 
-void Cube::UMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::UMove(int slices) {
     rotateMatrixClockwise(U_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -248,7 +385,8 @@ void Cube::UMove(int slices) {
     }
 }
 
-void Cube::UPrimeMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::UPrimeMove(int slices) {
     rotateMatrixCounterClockwise(U_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -256,7 +394,8 @@ void Cube::UPrimeMove(int slices) {
     }
 }
 
-void Cube::U2Move(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::U2Move(int slices) {
     rotateMatrix180(U_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -264,7 +403,8 @@ void Cube::U2Move(int slices) {
     }
 }
 
-void Cube::DMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::DMove(int slices) {
     rotateMatrixClockwise(D_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -272,7 +412,8 @@ void Cube::DMove(int slices) {
     }
 }
 
-void Cube::DPrimeMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::DPrimeMove(int slices) {
     rotateMatrixCounterClockwise(D_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -280,7 +421,8 @@ void Cube::DPrimeMove(int slices) {
     }
 }
 
-void Cube::D2Move(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::D2Move(int slices) {
     rotateMatrix180(D_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -288,7 +430,8 @@ void Cube::D2Move(int slices) {
     }
 }
 
-void Cube::FMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::FMove(int slices) {
     rotateMatrixClockwise(F_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -296,7 +439,8 @@ void Cube::FMove(int slices) {
     }
 }
 
-void Cube::FPrimeMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::FPrimeMove(int slices) {
     rotateMatrixCounterClockwise(F_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -304,7 +448,8 @@ void Cube::FPrimeMove(int slices) {
     }
 }
 
-void Cube::F2Move(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::F2Move(int slices) {
     rotateMatrix180(F_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -312,7 +457,8 @@ void Cube::F2Move(int slices) {
     }
 }
 
-void Cube::BMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::BMove(int slices) {
     rotateMatrixClockwise(B_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -321,7 +467,8 @@ void Cube::BMove(int slices) {
 
 }
 
-void Cube::BPrimeMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::BPrimeMove(int slices) {
     rotateMatrixCounterClockwise(B_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -329,7 +476,8 @@ void Cube::BPrimeMove(int slices) {
     }
 }
 
-void Cube::B2Move(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::B2Move(int slices) {
     rotateMatrix180(B_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -337,7 +485,8 @@ void Cube::B2Move(int slices) {
     }
 }
 
-void Cube::RMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::RMove(int slices) {
     rotateMatrixClockwise(R_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -345,7 +494,8 @@ void Cube::RMove(int slices) {
     }
 }
 
-void Cube::RPrimeMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::RPrimeMove(int slices) {
     rotateMatrixCounterClockwise(R_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -353,7 +503,8 @@ void Cube::RPrimeMove(int slices) {
     }
 }
 
-void Cube::R2Move(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::R2Move(int slices) {
     rotateMatrix180(R_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -361,7 +512,8 @@ void Cube::R2Move(int slices) {
     }
 }
 
-void Cube::LMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::LMove(int slices) {
     rotateMatrixClockwise(L_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -369,7 +521,8 @@ void Cube::LMove(int slices) {
     }
 }
 
-void Cube::LPrimeMove(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::LPrimeMove(int slices) {
     rotateMatrixCounterClockwise(L_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -377,7 +530,8 @@ void Cube::LPrimeMove(int slices) {
     }
 }
 
-void Cube::L2Move(int slices) {
+template <size_t SIZE>
+void Cube<SIZE>::L2Move(int slices) {
     rotateMatrix180(L_stickers);
 
     for(int i = 0; i < slices; i++) {
@@ -385,7 +539,8 @@ void Cube::L2Move(int slices) {
     }
 }
 
-void Cube::rotateMatrixClockwise(Cube::FaceStickers &mat) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateMatrixClockwise(Cube<SIZE>::FaceStickers &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N/2; x++) {
         // Consider elements in group of 4 in
@@ -409,8 +564,9 @@ void Cube::rotateMatrixClockwise(Cube::FaceStickers &mat) {
     }
 }
 
+template <size_t SIZE>
 // https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
-void Cube::rotateMatrixCounterClockwise(Cube::FaceStickers &mat) {
+void Cube<SIZE>::rotateMatrixCounterClockwise(Cube<SIZE>::FaceStickers &mat) {
     // Consider all squares one by one
     for (int x = 0; x < N/2; x++) {
         // Consider elements in group of 4 in
@@ -434,7 +590,8 @@ void Cube::rotateMatrixCounterClockwise(Cube::FaceStickers &mat) {
     }
 }
 
-void Cube::rotateMatrix180(Cube::FaceStickers &mat) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateMatrix180(Cube<SIZE>::FaceStickers &mat) {
     for (int i = 0; i < N/2; i++) {
 		for (int j = 0; j < N; j++) {
 			std::swap(mat[i][j], mat[N-i-1][N-j-1]);
@@ -448,7 +605,8 @@ void Cube::rotateMatrix180(Cube::FaceStickers &mat) {
 	}
 }
 
-void Cube::rotateSliceX(int col) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceX(int col) {
     // Rotate the appropriate columns of stickers for the U, F, D, and B
     // faces clockwise relative to R face of cube
     std::array<char, N> temp = getColumnValues(U_stickers, col);
@@ -458,7 +616,8 @@ void Cube::rotateSliceX(int col) {
     copyValues(getColumnPointersReverse(B_stickers, N-1 - col), temp);
 }
 
-void Cube::rotateSliceXPrime(int col) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceXPrime(int col) {
     // Rotate the appropriate columns of stickers for the U, F, D, and B
     // faces counter-clockwise relative to R face of cube
     std::array<char, N> temp = getColumnValues(U_stickers, col);
@@ -468,7 +627,8 @@ void Cube::rotateSliceXPrime(int col) {
     copyValues(getColumnPointers(F_stickers, col), temp);
 }
 
-void Cube::rotateSliceX2(int col) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceX2(int col) {
     // Swap the appropriate columns of stickers for the U, F, D, and B faces
     std::array<char, N> temp = getColumnValues(U_stickers, col);
     copyValues(getColumnPointers(U_stickers, col), getColumnValues(D_stickers, col));
@@ -478,7 +638,8 @@ void Cube::rotateSliceX2(int col) {
     copyValues(getColumnPointers(B_stickers, N-1 - col), temp);
 }
 
-void Cube::rotateSliceY(int row) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceY(int row) {
     // Rotate the appropriate rows of stickers for the F, R, B and L faces clockwise
     // relative to U face of cube
     std::array<char, N> temp = F_stickers[row];
@@ -488,7 +649,8 @@ void Cube::rotateSliceY(int row) {
     L_stickers[row] = temp;
 }
 
-void Cube::rotateSliceYPrime(int row) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceYPrime(int row) {
     // Rotate the appropriate rows of stickers for the F, R, B and L faces
     // counter-clockwise relative to U face of cube
     std::array<char, N> temp = F_stickers[row];
@@ -498,13 +660,15 @@ void Cube::rotateSliceYPrime(int row) {
     R_stickers[row] = temp;
 }
 
-void Cube::rotateSliceY2(int row) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceY2(int row) {
     // Swap the appropriate rows of stickers for the F, R, B and L faces
     std::swap(F_stickers[row], B_stickers[row]);
     std::swap(L_stickers[row], R_stickers[row]);
 }
 
-void Cube::rotateSliceZ(int row) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceZ(int row) {
     // Rotate the appropriate rows/columns of stickers for the U, R, D, and L
     // faces clockwise relative to F face of cube
     std::array<char, N> temp = U_stickers[row];
@@ -514,7 +678,8 @@ void Cube::rotateSliceZ(int row) {
     copyValues(getColumnPointers(R_stickers, N-1 - row), temp);
 }
 
-void Cube::rotateSliceZPrime(int row) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceZPrime(int row) {
     // Rotate the appropriate rows/columns of stickers for the U, R, D, and L
     // faces counter-clockwise relative to F face of cube
     std::array<char, N> temp = U_stickers[row];
@@ -524,7 +689,8 @@ void Cube::rotateSliceZPrime(int row) {
     copyValues(getColumnPointersReverse(L_stickers, row), temp);
 }
 
-void Cube::rotateSliceZ2(int row) {
+template <size_t SIZE>
+void Cube<SIZE>::rotateSliceZ2(int row) {
     // Swap the appropriate rows/columns of stickers for the U, R, D, and L faces
     std::swap(U_stickers[row], D_stickers[N-1 - row]);
     std::reverse(std::begin(U_stickers[row]), std::end(U_stickers[row]));
@@ -535,7 +701,8 @@ void Cube::rotateSliceZ2(int row) {
     copyValues(getColumnPointers(R_stickers, N-1 - row), temp);
 }
 
-std::array<char, Cube::N> Cube::getColumnValues(const Cube::FaceStickers &mat, int col) const {
+template <size_t SIZE>
+std::array<char, Cube<SIZE>::N> Cube<SIZE>::getColumnValues(const Cube<SIZE>::FaceStickers &mat, int col) const {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = mat[i][col];
@@ -543,7 +710,8 @@ std::array<char, Cube::N> Cube::getColumnValues(const Cube::FaceStickers &mat, i
     return column_array;
 }
 
-std::array<char, Cube::N> Cube::getColumnValuesReverse(const Cube::FaceStickers &mat, int col) const {
+template <size_t SIZE>
+std::array<char, Cube<SIZE>::N> Cube<SIZE>::getColumnValuesReverse(const Cube<SIZE>::FaceStickers &mat, int col) const {
     std::array<char, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = mat[N-1-i][col];
@@ -551,7 +719,8 @@ std::array<char, Cube::N> Cube::getColumnValuesReverse(const Cube::FaceStickers 
     return column_array;
 }
 
-std::array<char*, Cube::N> Cube::getColumnPointers(Cube::FaceStickers &mat, int col) const {
+template <size_t SIZE>
+std::array<char*, Cube<SIZE>::N> Cube<SIZE>::getColumnPointers(Cube<SIZE>::FaceStickers &mat, int col) const {
     std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[i][col];
@@ -559,7 +728,8 @@ std::array<char*, Cube::N> Cube::getColumnPointers(Cube::FaceStickers &mat, int 
     return column_array;
 }
 
-std::array<char*, Cube::N> Cube::getColumnPointersReverse(Cube::FaceStickers &mat, int col) const {
+template <size_t SIZE>
+std::array<char*, Cube<SIZE>::N> Cube<SIZE>::getColumnPointersReverse(Cube<SIZE>::FaceStickers &mat, int col) const {
     std::array<char*, N> column_array = {};
     for (int i = 0; i < N; i++) {
         column_array[i] = &mat[N-1-i][col];
@@ -567,8 +737,11 @@ std::array<char*, Cube::N> Cube::getColumnPointersReverse(Cube::FaceStickers &ma
     return column_array;
 }
 
-void Cube::copyValues(std::array<char*, N> pointers, const std::array<char, N> &values) {
+template <size_t SIZE>
+void Cube<SIZE>::copyValues(std::array<char*, N> pointers, const std::array<char, N> &values) {
     for(int i = 0; i < N; i++) {
         *pointers[i] = values[i];
     }
 }
+
+#endif

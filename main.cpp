@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cctype>
 #include <vector>
+#include <chrono>
 
 void simulateRubiksCube();
 std::string superflipAlgorithm(int size);
@@ -12,9 +13,9 @@ int main() {
 }
 
 void simulateRubiksCube() {
-    Cube rubiks_cube;
+    Cube<5> rubiks_cube;
     std::string algorithm;
-    algorithm = superflipAlgorithm(Cube::N);
+    algorithm = superflipAlgorithm(rubiks_cube.SIZE);
 
     std::cout << "Superflip algorithm: " << algorithm << "\n";
 

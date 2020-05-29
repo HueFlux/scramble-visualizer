@@ -38,6 +38,9 @@ class Cube {
         // initial solved state
         void reset();
 
+        // Returns the superflip algorithm for the Rubik's Cube as a string
+        std::string superflipAlgorithm();
+
     private:
         // Two-dimensional arrays that store the individual sticker values
         // for each face of the Rubik's Cube

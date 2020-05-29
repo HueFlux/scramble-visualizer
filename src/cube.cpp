@@ -576,3 +576,31 @@ void Cube::copyValues(std::array<char*, N> pointers, const std::array<char, N> &
         *pointers[i] = values[i];
     }
 }
+
+std::string Cube::superflipAlgorithm() {
+    // There exists no superflip algorithm for cubes of size N < 3
+    if (N < 3) {
+        return "";
+    }
+    // First 20 moves of the superflip algorithm for any cube of size N >= 3
+    std::array<std::string, 20> superflip_moves = {"U", "R2", "F", "B", "R", "B2", "R", "U2", "L", "B2", "R", "U'", "D'", "R2", "F", "R'", "L", "B2", "U2", "F2"};
+
+    std::string superflip_algorithm = "";
+
+    for (const std::string& move : superflip_moves) {
+        superflip_algorithm += move + " ";
+    }
+
+    for (int i = 2; i <= N/2; i++) {
+        for (const std::string& move : superflip_moves) {
+            if (move.length() == 1) {
+                superflip_algorithm += std::to_string(i) + move + "w";
+            }
+            else if (move.length() == 2) {
+                superflip_algorithm += std::to_string(i) + move[0] + "w" + move[1];
+            }
+            superflip_algorithm += " ";
+        }
+    }
+    return superflip_algorithm;
+}

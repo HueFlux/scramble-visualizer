@@ -62,9 +62,13 @@ Cube::Cube() {
     if (N > 3) {
         auto add_block_moves = [this] (const std::string &block_move,
                          const std::function<void(int)> &move_function) {
+            // Outer block moves without number of slices imply 2 slices
             this->moveToFunction[block_move] = [move_function] { move_function(2); };
             for (int i = 2; i < N-1; i++) {
                 std::string move = std::to_string(i) + block_move;
+                this->moveToFunction[move] = [move_function, i] { move_function(i); };
+                // Add outer block moves for notation without 'W' e.g. 2F'
+                move.erase(2, 1); // Erase 'W'
                 this->moveToFunction[move] = [move_function, i] { move_function(i); };
             }
         };

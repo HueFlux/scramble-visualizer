@@ -2,12 +2,19 @@ cmake_minimum_required(VERSION 3.10)
 
 project(scramble-visualizer VERSION 1.0)
 
-find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
+option(COMMAND_LINE "Build the command-line scramble visualizer" OFF)
 
-add_executable(scramble-visualizer src/cube.cpp
-                                   src/cube_face.cpp
-                                   src/cube_graphic.cpp
-                                   main.cpp)
+if (COMMAND_LINE)
+    add_executable(scramble-visualizer src/cube.cpp
+                                       command-line_visualizer.cpp)
+else()
+    find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
+
+    add_executable(scramble-visualizer src/cube.cpp
+                                       src/cube_face.cpp
+                                       src/cube_graphic.cpp
+                                       main.cpp)
+endif()
 
 target_include_directories(scramble-visualizer PUBLIC include)
 
@@ -18,4 +25,6 @@ target_compile_options(scramble-visualizer
                        $<$<CXX_COMPILER_ID:MSVC>:/W3 /permissive- /TP>
                        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra>)
 
-target_link_libraries(scramble-visualizer sfml-graphics)
+if(NOT COMMAND_LINE)
+    target_link_libraries(scramble-visualizer sfml-graphics)
+endif()

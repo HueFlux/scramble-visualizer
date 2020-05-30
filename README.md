@@ -15,7 +15,7 @@ To compile, run CMake on the project directory with `CMAKE_BUILD_TYPE=Release`
 and you'll get Makefile or equivalent for your platform, with which you can compile the project.
 
 On Linux and macOS:
-```
+```bash
 ~ $ git clone https://github.com/HueFlux/scramble-visualizer.git
 ~ $ cd scramble-visualizer
 ~/scramble-visualizer $ mkdir build/ && cd build/
@@ -28,7 +28,7 @@ On Linux and macOS:
 By default, the SFML version of the project will be built with the method above. If you would instead like to build the command-line version of this project which does not use SFML, you need to run CMake with `COMMAND_LINE=ON`.
 
 On Linux and macOS:
-```
+```bash
 ~ $ git clone https://github.com/HueFlux/scramble-visualizer.git
 ~ $ cd scramble-visualizer
 ~/scramble-visualizer $ mkdir build/ && cd build/
@@ -41,12 +41,12 @@ On Linux and macOS:
 It is important to note that CMake cache variables persist during reruns of CMake, so in order to switch to the SFML version of the project after building the command-line version, you must either rerun CMake with `COMMAND_LINE=OFF` or remove `CMakeCache.txt` from the build directory and rerun CMake normally.
 
 On Linux and macOS:
-```
+```bash
 ~/scramble-visualizer/build $ cmake -DCMAKE_BUILD_TYPE=Release -DCOMMAND-LINE=OFF ..
 ~/scramble-visualizer/build $ make
 ```
 or
-```
+```bash
 ~/scramble-visualizer/build $ rm CMakeCache.txt
 ~/scramble-visualizer/build $ cmake -DCMAKE_BUILD_TYPE=Release ..
 ~/scramble-visualizer/build $ make
@@ -55,7 +55,7 @@ or
 ## Changing Cube Size
 
 By default, the virtual Rubik's Cube is a 3x3x3. To change the size of the cube you must change the size value `N` in `include/cube.hpp` to the desired size
-```
+```cpp
 class Cube {
     public:
         static const unsigned int N = 3; // Size (Creates a 3x3x3)
@@ -63,6 +63,6 @@ class Cube {
 and then recompile the project with make or an equivalent.
 
 On Linux and macOS:
-```
+```bash
 ~/scramble-visualizer/build $ make
 ```

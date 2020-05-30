@@ -2,14 +2,13 @@
 #include "cube_graphic.hpp"
 #include <iostream>
 #include <string>
-#include <array>
 #include <thread>
-#include <vector>
 
+// Function used to maintain the view aspect ratio as the window size changes
 sf::View getLetterboxView(sf::View view, int windowWidth, int windowHeight);
+// Function used to get input from the user and apply the appropriate
+// operations on the Rubik's Cube
 void input(sf::RenderWindow* window, CubeGraphic* cube, bool* quit);
-
-std::string superflipAlgorithm(int size);
 
 int main() {
     // Create a window
@@ -22,13 +21,14 @@ int main() {
     sf::View view;
     view.setSize(res_x, res_y);
     view.setCenter(view.getSize().x / 2, view.getSize().y / 2);
-
+    // Create the Rubik's Cube visualizer
     CubeGraphic cube(view);
-    cube.applyAlgorithm(cube.superflipAlgorithm());
-    cube.updateStickers();
+    // cube.applyAlgorithm(cube.superflipAlgorithm());
 
     window.setActive(false);
+    // Used to close window from the user input thread
     bool quit_from_input = false;
+    // Handle input in a separate thread
     std::thread input_thread(input, &window, &cube, &quit_from_input);
 
     while (window.isOpen()) {
@@ -37,7 +37,7 @@ int main() {
             break;
         }
         sf::Event event;
-        // Handle all events
+        // Handle events
         while (window.pollEvent(event)) {
             switch (event.type) {
                 case sf::Event::Closed:
@@ -53,9 +53,7 @@ int main() {
         // Update the screen
         window.clear();
         window.setView(view);
-        // Draw objects here
         window.draw(cube);
-
         window.display();
     }
     input_thread.detach();

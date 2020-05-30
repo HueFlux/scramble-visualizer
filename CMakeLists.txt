@@ -4,9 +4,9 @@ project(scramble-visualizer VERSION 1.0)
 
 find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
 
-add_executable(scramble-visualizer src/cube_face.cpp
+add_executable(scramble-visualizer src/cube.cpp
+                                   src/cube_face.cpp
                                    src/cube_graphic.cpp
-                                   src/cube.cpp
                                    main.cpp)
 
 target_include_directories(scramble-visualizer PUBLIC include)

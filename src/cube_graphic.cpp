@@ -16,6 +16,8 @@ CubeGraphic::CubeGraphic(sf::View &view) :
     L_box(sf::RectangleShape(face_size)),
     B_box(sf::RectangleShape(face_size))
 {
+    // rubiks_cube is default constructed
+    
     F_box.setPosition(view.getCenter().x - face_size.x,
                       view.getCenter().y - face_size.y / 2);
     U_box.setPosition(view.getCenter().x - face_size.x,

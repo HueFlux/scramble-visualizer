@@ -6,13 +6,6 @@ CubeFace::CubeFace(sf::RectangleShape &face, const Cube::FaceStickers &sticker_v
     face(face),
     sticker_values(sticker_values)
 {
-    createCubeFace();
-}
-
-CubeFace::~CubeFace() {
-}
-
-void CubeFace::createCubeFace() {
     face.setFillColor(sf::Color::Transparent);
 
     float face_border = 7;
@@ -53,6 +46,9 @@ void CubeFace::createCubeFace() {
             stickers[i][j].setOutlineThickness(sticker_width * -0.05);
         }
     }
+}
+
+CubeFace::~CubeFace() {
 }
 
 void CubeFace::updateStickers() {

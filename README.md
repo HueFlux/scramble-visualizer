@@ -30,7 +30,7 @@ On Linux and macOS:
 
 ## Command-Line Version
 
-<img src="https://user-images.githubusercontent.com/46148388/83342251-274a8280-a2bb-11ea-93a0-92cd53172400.png" alt="Command-Line 5x5" width="450"/> <img src="https://user-images.githubusercontent.com/46148388/83342252-2ca7cd00-a2bb-11ea-93a6-18f6b5d02d75.png" alt="Command-Line 5x5" width="450"/>
+<img src="https://user-images.githubusercontent.com/46148388/83342251-274a8280-a2bb-11ea-93a0-92cd53172400.png" alt="Command-Line 5x5" width="425"/> <img src="https://user-images.githubusercontent.com/46148388/83342252-2ca7cd00-a2bb-11ea-93a6-18f6b5d02d75.png" alt="Command-Line 5x5" width="425"/>
 
 By default, the SFML version of the project will be built with the method above. If you would instead like to build the command-line version of this project which does not use SFML, you need to run CMake with `COMMAND_LINE=ON`.
 

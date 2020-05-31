@@ -4,22 +4,11 @@
 #include <vector>
 #include <chrono>
 
-void simulateRubiksCube();
-std::string superflipAlgorithm(int size);
-
 int main() {
-    simulateRubiksCube();
-    return 0;
-}
-
-void simulateRubiksCube() {
     Cube rubiks_cube;
 
     std::string algorithm;
-    algorithm = rubiks_cube.superflipAlgorithm();
-
-    std::cout << "Superflip algorithm: " << algorithm << "\n";
-
+    // algorithm = rubiks_cube.superflipAlgorithm();
     rubiks_cube.applyAlgorithm(algorithm);
 
     while (true) {
@@ -41,4 +30,6 @@ void simulateRubiksCube() {
             std::cout << "\033[1;31mInvalid move(s).\033[0m" << '\n';
         }
     }
+    
+    return 0;
 }
